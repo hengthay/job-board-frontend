@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { FaRegUser } from 'react-icons/fa';
 import EyeToggleIcon from '../components/Helper/EyeToggleIcon';
-import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, selectUser } from '../feature/auth/authSlice';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const Login = () => {
 
@@ -12,6 +12,7 @@ const Login = () => {
     name: '',
     password: ''
   });
+
   const user = useSelector(selectUser);
   const navigate = useNavigate();
   console.log('user', user);
@@ -49,9 +50,9 @@ const Login = () => {
 
       await dispatch(loginUser({ payload })).unwrap();
       
-      await Swal.fire({
-        title: "Successfully",
-        text: "Your login is successfully!",
+      Swal.fire({
+        title: 'Success',
+        text: "Your login is successful!",
         icon: 'success',
         timer: 2000,
       })
@@ -66,7 +67,7 @@ const Login = () => {
       return () => clearTimeout(timeOut);
     } catch (error) {
       Swal.fire({
-        title: "Login Failed",
+        title: "Failed",
         text: "Your login is not success!",
         icon: 'error',
         timer: 2000,

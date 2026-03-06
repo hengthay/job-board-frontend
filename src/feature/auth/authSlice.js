@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { API_BASE_URL, axiosInstance } from "../../components/AxiosInstance";
 
 const initialState = {
-  userData: [],
+  userData: JSON.parse(localStorage.getItem('userData')) || null,
   status: 'idle',
   error: null
 }
@@ -31,8 +31,16 @@ export const loginUser = createAsyncThunk(
 export const logoutUser = createAsyncThunk(
   'auths/logoutUser', async (_, thunkAPI) => {
     try {
+      // To get access_token from initialState
+      const { auths: { userData } } = thunkAPI.getState();
+      
+      // console.log(access_token.auths.userData.access_token);
+
       const res = await axiosInstance.post(`${API_BASE_URL}/logout`, {}, {
-        withCredentials: true
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${userData?.access_token}`
+        }
       });
 
       return res?.data?.data ?? {message: "Logged out"};
@@ -60,6 +68,8 @@ const authSlice = createSlice({
         state.error = null;
         state.status = 'succeeded';
         state.userData = action.payload;
+        // Persist to localStorage so refresh doesn't wipe the token
+        localStorage.setItem('userData', JSON.stringify(action.payload));
       })
       .addCase(loginUser.rejected, (state) => {
         state.error = 'Unable to login due to Internal Server!';
@@ -73,6 +83,8 @@ const authSlice = createSlice({
         state.error = null;
         state.status = 'succeeded';
         state.userData = null;
+        // Clear persisted token on logout
+        localStorage.removeItem('userData');
       })
       .addCase(logoutUser.rejected, (state) => {
         state.error = 'Unable to login due to Internal Server!';
