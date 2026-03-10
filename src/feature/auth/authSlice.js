@@ -52,6 +52,26 @@ export const logoutUser = createAsyncThunk(
   }
 )
 
+export const registerUser = createAsyncThunk(
+  'auths/registerUser', async ({ payload }, thunkAPI) => {
+    try {
+      const res = await axiosInstance.post(`${API_BASE_URL}/register`, payload);
+
+      if(!res?.data?.data) {
+        return thunkAPI.rejectWithValue('Failed to register');
+      }
+
+      console.log(res?.data?.data);
+
+      return res?.data?.data ?? [];
+    } catch (error) {
+      console.log('Failed to register user - ', error);
+      const msg = error?.response?.data?.message;
+      return thunkAPI.rejectWithValue(msg);
+    }
+  }
+)
+
 const authSlice = createSlice({
   name: "auths",
   initialState,
@@ -75,6 +95,19 @@ const authSlice = createSlice({
         state.error = 'Unable to login due to Internal Server!';
         state.status = 'failed';
       })
+      .addCase(registerUser.pending, (state) => {
+        state.error = null;
+        state.status = 'loading';
+      })
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.error = null;
+        state.status = 'succeeded';
+        state.userData = action.payload;
+      })
+      .addCase(registerUser.rejected, (state) => {
+        state.error = 'Unable to register due to Internal Server!';
+        state.status = 'failed';
+      })
       .addCase(logoutUser.pending, (state) => {
         state.error = null;
         state.status = 'loading';
@@ -87,7 +120,7 @@ const authSlice = createSlice({
         localStorage.removeItem('userData');
       })
       .addCase(logoutUser.rejected, (state) => {
-        state.error = 'Unable to login due to Internal Server!';
+        state.error = 'Unable to logout due to Internal Server!';
         state.status = 'failed';
       })
   }

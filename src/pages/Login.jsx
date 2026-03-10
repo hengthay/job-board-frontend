@@ -3,7 +3,7 @@ import { FaRegUser } from 'react-icons/fa';
 import EyeToggleIcon from '../components/Helper/EyeToggleIcon';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, selectUser } from '../feature/auth/authSlice';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 const Login = () => {
@@ -15,7 +15,7 @@ const Login = () => {
 
   const user = useSelector(selectUser);
   const navigate = useNavigate();
-  console.log('user', user);
+  // console.log('user', user);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(null);
   const [isError, setIsError] = useState(null);
@@ -80,9 +80,12 @@ const Login = () => {
   }
   // console.log('FormData -', formData);
   return (
-    <div className='max-w-sm mx-auto flex flex-col justify-center items-center w-screen h-screen'>
+    <div className='max-w-sm max-sm:w-87.5 mx-auto flex flex-col justify-center items-center w-screen h-screen'>
       <div className='w-full border border-gray-300 rounded-xl shadow-lg bg-white p-4 space-y-4'>
-        <h2 className='text-xl font-semibold text-cyan-500'>Login</h2>
+        <h2 className='md:text-2xl text-xl font-semibold text-cyan-500'>Login</h2>
+        <div className='my-4'>
+          <h3 className='md:text-2xl text-xl font-semibold'>Hello, <br /> Welcome Back</h3>
+        </div>
         <form className="space-y-2" onSubmit={handleSubmit}>
           <div className='w-full flex flex-col space-y-4'>
             <div className='w-full flex flex-col space-y-2 relative'>
@@ -118,7 +121,14 @@ const Login = () => {
             className='w-full my-4 bg-cyan-500 hover:bg-cyan-600 transition-all ease-in-out duration-300 p-1.5 text-white font-medium max-sm:text-sm text-base cursor-pointer'>
               Login
           </button>
+          <div className='flex justify-end items-center gap-x-1.5'>
+            <p className='text-sm text-gray-400'>Don't have an account? </p>
+            <Link className='text-sm text-cyan-500 font-semibold' to={'/register'}>Sign Up</Link>
+          </div>
         </form>
+        {
+          isError && (<p className='text-sm text-red-500'>{isError}</p>)
+        }
       </div>
     </div>
   )
