@@ -16,7 +16,7 @@ export const fetchJobCategories = createAsyncThunk(
         return thunkAPI.rejectWithValue('Job Categories did not contain any data!');
       }
 
-      console.log('Job Categories', res?.data?.data);
+      // console.log('Job Categories', res?.data?.data);
 
       return res?.data?.data ?? [];
     } catch (error) {

@@ -1,55 +1,46 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { logoutUser, selectUser } from '../feature/auth/authSlice';
-import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import { fetchPostingJobs, selectJobPostingData, selectJobPostingStatus } from '../feature/jobs/jobSlice';
+import { useEffect } from 'react';
+import JobCard from '../components/Job/JobCard';
 
 const Job = () => {
 
   const dispatch = useDispatch();
-  const user = useSelector(selectUser);
+  const jobs = useSelector(selectJobPostingData);
+  const jobPostingStatus = useSelector(selectJobPostingStatus);
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
+  useEffect(() => {
     try {
-      if(!user) {
-        return;
-      }
+      
+      if (jobPostingStatus === 'idle') dispatch(fetchPostingJobs());
 
-      await dispatch(logoutUser()).unwrap();
-
-      Swal.fire({
-        title: "Success",
-        text: "Your logout successful!",
-        icon: "success",
-        timer: 2000
-      });
-
-      const timeOut = setTimeout(() => {
-        navigate('/login')
-      }, 2000);
-
-      return () => clearTimeout(timeOut);
     } catch (error) {
-      Swal.fire({
-        title: "Failed",
-        text: "Your logout failed!",
-        icon: "warning",
-        timer: 2000
-      })
       console.log(error);
     }
-  }
+  }, [dispatch, jobPostingStatus])
 
   return (
-    <div>
-      <p className='text-center font-semibold italic mt-20 text-4xl'>Welcome to Job Posting Website</p>
-      <button 
-        className='bg-cyan-400 p-1.5 text-white rounded-xl min-w-20 cursor-pointer'
-        onClick={() => handleLogout()}>
-        Logout
-      </button>
+    <div className="w-full">
+      {/* Page Header */}
+      <div className="max-w-8xl mx-auto px-6 md:px-25 mt-10">
+        <div className='w-full border border-gray-300 shadow-lg rounded-md p-4'>
+          <h3 className="font-bold md:text-3xl text-2xl text-gray-900">
+            My Posting Jobs List
+          </h3>
+          <p className="text-gray-500 mt-2">Manage and review the performance of your job listings.</p>
+          <div className="w-full mt-10 space-y-4 pb-20">
+            {
+              jobs.map((job) => (
+                <JobCard job={job} key={job.id}/>
+              ))
+            }
+          </div>
+        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
 export default Job

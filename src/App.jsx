@@ -11,6 +11,9 @@ import Login from './pages/Login'
 import NotFound from './pages/NotFound'
 import Register from './pages/Register'
 import Home from './pages/Home'
+import JobCreate from './components/Job/JobCreate'
+import JobUpdate from './components/Job/JobUpdate'
+import JobDetail from './components/Job/JobDetail'
 
 const App = () => { 
   return ( 
@@ -18,13 +21,16 @@ const App = () => {
       <Route element={<MainLayout />}>
         {/* Public Route */}
         <Route path='/' element={<Home />} index /> 
-        <Route path='/jobs' element={<Job />}/> 
         {/* Protected Route */}
         <Route element={<ProtectedRoute />}> 
             <Route path='/applications' element={<Application />}/> 
             <Route path='/companies' element={<Company />}/> 
             <Route path='/profiles' element={<Profile />}/> 
             <Route path='/resumes' element={<Resume />}/> 
+            <Route path='/my-jobs' element={<Job />}/> 
+            <Route path='/jobs/create' element={<JobCreate />}/> 
+            <Route path='/jobs/:id/edit' element={<JobUpdate />}/> 
+            <Route path='/jobs/:id/view' element={<JobDetail />}/> 
         </Route> 
       </Route> 
       <Route path='/login' element={<Login />}/> 

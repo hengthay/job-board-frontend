@@ -91,7 +91,8 @@ const Register = () => {
         icon: 'error',
         timer: 2000,
       })
-      console.log('error', error?.response?.data?.message)
+      console.log('error', error?.response?.data?.message);
+      setIsError("");
     } finally {
       setIsLoading(false);
     }

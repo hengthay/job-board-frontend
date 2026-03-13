@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { API_BASE_URL, axiosInstance } from "../../components/AxiosInstance";
 
 const initialState = {
-  userData: JSON.parse(localStorage.getItem('userData')) || null,
+  userData: localStorage.getItem('userData') ? JSON.parse(localStorage.getItem('userData')) : null,
   status: 'idle',
   error: null
 }
@@ -34,12 +34,13 @@ export const logoutUser = createAsyncThunk(
       // To get access_token from initialState
       const { auths: { userData } } = thunkAPI.getState();
       
-      // console.log(access_token.auths.userData.access_token);
+      const token = userData?.access_token;
+      // console.log(token);
 
       const res = await axiosInstance.post(`${API_BASE_URL}/logout`, {}, {
         withCredentials: true,
         headers: {
-          Authorization: `Bearer ${userData?.access_token}`
+          Authorization: `Bearer ${token}`
         }
       });
 
@@ -76,7 +77,9 @@ const authSlice = createSlice({
   name: "auths",
   initialState,
   reducers: {
-
+    clearError: (state) => { 
+      state.error = null; 
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -90,9 +93,10 @@ const authSlice = createSlice({
         state.userData = action.payload;
         // Persist to localStorage so refresh doesn't wipe the token
         localStorage.setItem('userData', JSON.stringify(action.payload));
+        console.log(action.payload);
       })
-      .addCase(loginUser.rejected, (state) => {
-        state.error = 'Unable to login due to Internal Server!';
+      .addCase(loginUser.rejected, (state, action) => {
+        state.error = action.payload || "Something went wrong";
         state.status = 'failed';
       })
       .addCase(registerUser.pending, (state) => {
@@ -103,6 +107,7 @@ const authSlice = createSlice({
         state.error = null;
         state.status = 'succeeded';
         state.userData = action.payload;
+        localStorage.setItem('userData', JSON.stringify(action.payload));
       })
       .addCase(registerUser.rejected, (state) => {
         state.error = 'Unable to register due to Internal Server!';
@@ -119,8 +124,8 @@ const authSlice = createSlice({
         // Clear persisted token on logout
         localStorage.removeItem('userData');
       })
-      .addCase(logoutUser.rejected, (state) => {
-        state.error = 'Unable to logout due to Internal Server!';
+      .addCase(logoutUser.rejected, (state, action) => {
+        state.error = action.payload || 'Something went wrong';
         state.status = 'failed';
       })
   }

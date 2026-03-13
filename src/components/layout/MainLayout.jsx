@@ -11,19 +11,17 @@ const MainLayout = () => {
   }
 
   return (
-    <div className="flex min-h-screen h-auto w-full">
-      {/* Side bars */}
-      <div className='w-full mx-auto'>
-        {/* NavBar */}
-        <div className='max-w-8xl mx-auto shadow-md bg-cyan-100 h-100'>
+    <div className="flex min-h-screen flex-col w-full">
+      {/* NavBar - Full width wrapper */}
+      <div className='w-full shadow-md'>
+        <div className="max-w-8xl mx-auto">
           <NavBar isOpen={isOpen} handleOpenMenu={handleOpenMenu}/>
         </div>
-        <div className='max-w-8xl container mx-auto'>
-          <main className="flex-1 min-h-screen overflow-y-auto pt-20 px-4">
-            <Outlet />
-          </main>
-        </div>
       </div>
+
+      <main className="flex-1 w-full">
+        <Outlet />
+      </main>
     </div>
   )
 }

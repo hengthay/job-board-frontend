@@ -72,7 +72,8 @@ const Login = () => {
         icon: 'error',
         timer: 2000,
       })
-      console.log('error', error?.response?.data?.message)
+      console.log('error', error?.response?.data?.message);
+      setIsError("");
     } finally {
       setIsLoading(false);
       setFormData({name: "", password: ""})
@@ -119,7 +120,7 @@ const Login = () => {
           <button 
             type='submit'
             className='w-full my-4 bg-cyan-500 hover:bg-cyan-600 transition-all ease-in-out duration-300 p-1.5 text-white font-medium max-sm:text-sm text-base cursor-pointer'>
-              Login
+              {isLoading ? (<p>Loading<span className='animate-pulse'>...</span></p>) : 'Login'}
           </button>
           <div className='flex justify-end items-center gap-x-1.5'>
             <p className='text-sm text-gray-400'>Don't have an account? </p>
