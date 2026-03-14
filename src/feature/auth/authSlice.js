@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { API_BASE_URL, axiosInstance } from "../../components/AxiosInstance";
+import { isTokenExpired } from "../../components/Helper/tokenExpiredChecker";
 
 const initialState = {
-  userData: localStorage.getItem('userData') ? JSON.parse(localStorage.getItem('userData')) : null,
+  userData: localStorage.getItem("userData") ? JSON.parse(localStorage.getItem('userData')) : null,
   status: 'idle',
   error: null
 }
@@ -79,6 +80,12 @@ const authSlice = createSlice({
   reducers: {
     clearError: (state) => { 
       state.error = null; 
+    },
+    forceLogout: (state) => {
+      state.userData = null;
+      state.status = "idle";
+      state.error = null;
+      localStorage.removeItem('userData');
     }
   },
   extraReducers: (builder) => {
@@ -131,6 +138,7 @@ const authSlice = createSlice({
   }
 })
 
+export const {clearError, forceLogout} = authSlice.actions;
 export default authSlice.reducer;
 export const selectUser = state => state.auths.userData;
 export const selectUserStatus = state => state.auths.status;

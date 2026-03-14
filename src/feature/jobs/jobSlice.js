@@ -1,7 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { API_BASE_URL, axiosInstance } from "../../components/AxiosInstance";
-import { useSelector } from "react-redux";
-import { selectUser } from "../auth/authSlice";
 
 const initialState = {
   jobData: [],
@@ -160,16 +158,12 @@ export const deleteJob = createAsyncThunk(
         return thunkAPI.rejectWithValue('ID is not received to deleted!');
       }
 
-      const res = await axiosInstance.delete(`${API_BASE_URL}/jobs/${id}`, {
+      await axiosInstance.delete(`${API_BASE_URL}/jobs/${id}`, {
         withCredentials: true,
         headers: {
           Authorization: `Bearer ${token}`,
         }
       });
-
-      if(!res?.data?.data) {
-        return thunkAPI.rejectWithValue('Unable to update job with id', $id);
-      }
 
       return {
         message: `Job with id:${id} is successfully deleted!`

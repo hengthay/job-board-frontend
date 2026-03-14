@@ -2,8 +2,48 @@ import { CiEdit, CiLocationOn, CiRead, CiTrash } from "react-icons/ci";
 import { HiOutlineUsers } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import formatOnlyDay from "../Helper/formatOnlyDay";
+import { useDispatch } from "react-redux";
+import { deleteJob } from "../../feature/jobs/jobSlice";
+import Swal from "sweetalert2";
 
 const JobCard = ({ job }) => {
+
+  const dispatch = useDispatch();
+
+  const handleDelete = async (id) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "This job will be permanently deleted!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Yes, delete it",
+      cancelButtonText: "Cancel",
+    });
+
+    if (!result.isConfirmed) return; // ❌ user canceled
+    try {
+      await dispatch(deleteJob(id)).unwrap();
+
+      Swal.fire({
+        title: "Deleted",
+        text: "Job has been deleted successfully!",
+        icon: "success",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        title: "Failed",
+        text: `Your Job could not be deleted. ${error.message}`,
+        icon: "error",
+        timer: 1500,
+      });
+    }
+  };
+
   return (
     <div
       key={job?.id}
@@ -75,6 +115,8 @@ const JobCard = ({ job }) => {
             <CiEdit size={24} />
           </Link>
           <button
+            type="button"
+            onClick={() => handleDelete(job.id)}
             title="Delete Job"
             className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
           >
