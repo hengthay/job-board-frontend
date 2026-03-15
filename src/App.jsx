@@ -14,6 +14,8 @@ import Home from './pages/Home'
 import JobCreate from './components/Job/JobCreate'
 import JobUpdate from './components/Job/JobUpdate'
 import JobDetail from './components/Job/JobDetail'
+import CompanyCreate from './components/Company/CompanyCreate'
+import CompanyUpdate from './components/Company/CompanyUpdate'
 
 const App = () => { 
   return ( 
@@ -25,6 +27,8 @@ const App = () => {
         <Route element={<ProtectedRoute />}> 
             <Route path='/applications' element={<Application />}/> 
             <Route path='/companies' element={<Company />}/> 
+            <Route path='/companies/create' element={<CompanyCreate />}/> 
+            <Route path='/companies/:id/edit' element={<CompanyUpdate />}/> 
             <Route path='/profiles' element={<Profile />}/> 
             <Route path='/resumes' element={<Resume />}/> 
             <Route path='/my-jobs' element={<Job />}/> 

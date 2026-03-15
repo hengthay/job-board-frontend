@@ -212,8 +212,8 @@ const Home = () => {
         </div>
         <div className="my-4 space-y-4">
           {jobStatus === "loading" && (
-            <div className="flex items-center gap-x-2 py-1.5">
-              <p className="w-8 h-8 rounded-full border border-t-transparent animate-spin"></p>
+            <div className="flex items-center mt-6 gap-x-2 py-1.5">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
               <p className="text-black font-medium">Loading<span className="animate-pulse">...</span></p>
             </div>
           )}

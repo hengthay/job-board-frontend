@@ -68,7 +68,9 @@ const JobCard = ({ job }) => {
               <span>{job?.job_type?.name}</span>
               <span>•</span>
               <span className="text-gray-400">
-                Posted {formatOnlyDay(job?.created_at)} days ago
+                {formatOnlyDay(job?.created_at) === "Just now" 
+                  ? "Posted just now" 
+                  : `Posted ${formatOnlyDay(job?.created_at)} ago`}
               </span>
             </div>
           </div>
