@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { fetchPostingJobs, selectJobPostingData, selectJobPostingStatus } from '../feature/jobs/jobSlice';
 import { useEffect } from 'react';
 import JobCard from '../components/Job/JobCard';
@@ -11,7 +11,6 @@ const Job = () => {
   const dispatch = useDispatch();
   const jobs = useSelector(selectJobPostingData);
   const jobPostingStatus = useSelector(selectJobPostingStatus);
-  const navigate = useNavigate();
 
   useEffect(() => {
     try {

@@ -2,9 +2,13 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { API_BASE_URL, axiosInstance } from "../../components/AxiosInstance";
 
 const initialState = {
-  candidateProfileData: {},
+  candidateProfileData: [],
   status: 'idle',
   error: null,
+
+  // profile details
+  candidateProfileDetailData: null,
+  statusDetail: "idle",
 }
 
 export const fetchCandidateProfile = createAsyncThunk(
@@ -18,6 +22,24 @@ export const fetchCandidateProfile = createAsyncThunk(
       console.log('Candidate Profile - ', res?.data?.data);
 
       return res?.data?.data ?? [];
+    } catch (error) {
+      const msg = error?.response?.data?.message;
+      console.log('Error to fetch candidate profile - ', msg);
+      return thunkAPI.rejectWithValue(msg);
+    }
+  }
+);
+export const fetchIndividualCandidateProfile = createAsyncThunk(
+  'candidateProfile/fetchIndividualCandidateProfile', async (id, thunkAPI) => {
+    try {
+      
+      const res = await axiosInstance.get(`${API_BASE_URL}/profiles/${id}`);
+
+      if(!res?.data?.data) return thunkAPI.rejectWithValue('Failed to get candidate profile with id:', id);
+
+      console.log('Candidate Profile - ', res?.data?.data);
+
+      return res?.data?.data ?? null;
     } catch (error) {
       const msg = error?.response?.data?.message;
       console.log('Error to fetch candidate profile - ', msg);
@@ -108,7 +130,10 @@ const candidateProfileSlice = createSlice({
   name: "candidateProfile",
   initialState,
   reducers: {
-
+    resetCandidateProfileDetail: (state) => {
+      state.candidateProfileDetailData = null;
+      state.statusDetail = 'idle';
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -123,7 +148,20 @@ const candidateProfileSlice = createSlice({
       })
       .addCase(fetchCandidateProfile.rejected, (state, action) => {
         state.error = action.payload || 'Something went wrong!';
-        state.status = 'loading';
+        state.status = 'failed';
+      })
+      .addCase(fetchIndividualCandidateProfile.pending, (state) => {
+        state.error = null;
+        state.statusDetail = 'loading';
+      })
+      .addCase(fetchIndividualCandidateProfile.fulfilled, (state, action) => {
+        state.error = null;
+        state.statusDetail = 'succeeded';
+        state.candidateProfileDetailData = action.payload;
+      })
+      .addCase(fetchIndividualCandidateProfile.rejected, (state, action) => {
+        state.error = action.payload || "Something went wrong!";
+        state.statusDetail = 'failed';
       })
       .addCase(createCandidateProfile.pending, (state) => {
         state.error = null;
@@ -136,7 +174,7 @@ const candidateProfileSlice = createSlice({
       })
       .addCase(createCandidateProfile.rejected, (state, action) => {
         state.error = action.payload || 'Something went wrong!';
-        state.status = 'loading';
+        state.status = 'failed';
       })
       .addCase(updateCandidateProfile.pending, (state) => {
         state.error = null;
@@ -147,11 +185,32 @@ const candidateProfileSlice = createSlice({
         state.status = 'succeeded';
         const updated = action.payload;
 
-        state.candidateProfileData = state.candidateProfileData.map((profile) => profile.id === updated.id ? updated : profile);
+        // Ensure state.companyData is treated as an array
+        if (Array.isArray(state.candidateProfileData)) {
+          state.candidateProfileData = state.candidateProfileData.map((profile) =>
+            profile.id === updated.id
+              ? {
+                  ...profile,       // keep existing nested fields (company_social, user, etc.)
+                  ...updated,       // overwrite with updated flat fields
+                  resume: updated.resume ?? profile.resume,
+                  user: updated.user ?? profile.user,
+                }
+              : profile
+          );
+        } else {
+          const existing = state.candidateProfileData;
+          state.candidateProfileData = [{
+            ...existing,
+            ...updated,
+            company_social: updated.company_social ?? existing.vprofile,
+            user: updated.user ?? existing.user,
+          }];
+        }
+
       })
       .addCase(updateCandidateProfile.rejected, (state, action) => {
         state.error = action.payload || 'Something went wrong!';
-        state.status = 'loading';
+        state.status = 'failed';
       })
       .addCase(removeCandidateProfile.pending, (state) => {
         state.error = null;
@@ -166,12 +225,15 @@ const candidateProfileSlice = createSlice({
       })
       .addCase(removeCandidateProfile.rejected, (state, action) => {
         state.error = action.payload || 'Something went wrong!';
-        state.status = 'loading';
+        state.status = 'failed';
       })
   }
 })
 
 export default candidateProfileSlice.reducer;
+export const { resetCandidateProfileDetail } = candidateProfileSlice.actions;
 export const selectCandidateProfileData = (state) => state.candidateProfile.candidateProfileData;
 export const selectCandidateProfileStatus = (state) => state.candidateProfile.status;
 export const selectCandidateProfileError = (state) => state.candidateProfile.error;
+export const selectCandidateProfileDetailData = (state) => state.candidateProfile.candidateProfileDetailData;
+export const selectCandidateProfileDetailStatus = (state) => state.candidateProfile.statusDetail;

@@ -33,6 +33,7 @@ export const fetchCompany = createAsyncThunk(
     }
   }
 );
+
 export const fetchCompanyById = createAsyncThunk(
   'companies/fetchCompanyById', async (id, thunkAPI) => {
     try {
@@ -43,7 +44,7 @@ export const fetchCompanyById = createAsyncThunk(
 
       console.log('Company data - ', res?.data?.data);
 
-      return res?.data?.data ?? [];
+      return res?.data?.data ?? null;
     } catch (error) {
       const msg = error?.response?.data?.message;
       console.log('Error to fetch company - ', msg);

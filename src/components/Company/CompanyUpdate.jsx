@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { FiSave, FiUpload } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { createCompanyProfile, fetchCompanyById, resetCompanyStatus, selectCompanyDetailData, updateCompanyProfile } from "../../feature/company/companySlice";
+import { fetchCompanyById, resetCompanyStatus, selectCompanyDetailData, updateCompanyProfile } from "../../feature/company/companySlice";
 import Swal from "sweetalert2";
 
 const CompanyUpdate = () => {
@@ -46,7 +46,7 @@ const CompanyUpdate = () => {
       setForm({
         name: companyDetail?.name ?? "",
         slug: companyDetail?.slug ?? "",
-        logo_path: companyDetail?.logo_path ?? null,
+        logo_path: null,
         website_url: companyDetail?.website_url ?? "",
         industry: companyDetail?.industry ?? "",
         company_size: companyDetail?.company_size ?? "",

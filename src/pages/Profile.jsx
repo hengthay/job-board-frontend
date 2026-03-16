@@ -66,7 +66,7 @@ const Profile = () => {
                 </Link>
               ) : (
               <Link
-                to={'/'}
+                to={'/profiles/create'}
                 className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-md"
                 >
                 Create Profile
