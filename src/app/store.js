@@ -5,6 +5,7 @@ import jobTypeReducer from "../feature/jobtype/jobTypeSlice";
 import jobCategoriesReducer from "../feature/jobcategories/jobCategoriesSlice";
 import companyReducer from "../feature/company/companySlice";
 import candidateProfileReducer from "../feature/candidateProfile/candidateProfileSlice";
+import companySocialReducer from "../feature/companySocial/companySocialSlice";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     jobCategories: jobCategoriesReducer,
     companies: companyReducer,
     candidateProfile: candidateProfileReducer,
+    companySocials: companySocialReducer
   }
 });
 

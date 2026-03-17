@@ -18,6 +18,8 @@ import CompanyCreate from './components/Company/CompanyCreate'
 import CompanyUpdate from './components/Company/CompanyUpdate'
 import ProfileCreate from './components/Profile/ProfileCreate'
 import ProfileUpdate from './components/Profile/ProfileUpdate'
+import CompanySocialCreate from './components/CompanySocial/CompanySocialCreate'
+import CompanySocialUpdate from './components/CompanySocial/CompanySocialUpdate'
 
 const App = () => { 
   return ( 
@@ -31,6 +33,8 @@ const App = () => {
             <Route path='/companies' element={<Company />}/> 
             <Route path='/companies/create' element={<CompanyCreate />}/> 
             <Route path='/companies/:id/edit' element={<CompanyUpdate />}/> 
+            <Route path='/company-socials/create' element={<CompanySocialCreate />}/> 
+            <Route path='/company-socials/:id/edit' element={<CompanySocialUpdate />}/> 
             <Route path='/profiles' element={<Profile />}/> 
             <Route path='/profiles/create' element={<ProfileCreate />}/> 
             <Route path='/profiles/:id/edit' element={<ProfileUpdate />}/> 

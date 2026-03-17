@@ -42,7 +42,7 @@ export const fetchCompanyById = createAsyncThunk(
 
       if(!res?.data?.data) return thunkAPI.rejectWithValue(`Failed to fetch company with id:${id}!`);
 
-      console.log('Company data - ', res?.data?.data);
+      console.log('Company data detail - ', res?.data?.data);
 
       return res?.data?.data ?? null;
     } catch (error) {
