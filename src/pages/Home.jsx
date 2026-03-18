@@ -1,6 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CiSearch } from "react-icons/ci";
-import Image from "../assets/1.jpg";
 import { CiLocationOn } from "react-icons/ci";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,7 +8,6 @@ import {
   selectJobs,
   selectJobStatus,
 } from "../feature/jobs/jobSlice";
-import { API_BASE_URL } from "../components/AxiosInstance";
 import {
   fetchJobTypes,
   selectJobTypes,
@@ -31,7 +29,7 @@ const Home = () => {
   const jobCategoryStatus = useSelector(selectJobCategoriesStatus);
   const dispatch = useDispatch();
   const [searchByTitle, setSearchByTitle] = useState("");
-  const [searchByCity, setSearchByCity] = useState("");
+  const [searchByCompanyName, setSearchByCompanyName] = useState("");
   const [sort, setSort] = useState("newest");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedJobType, setSelectedJobType] = useState("");
@@ -52,7 +50,7 @@ const Home = () => {
   const filteredJob = useMemo(() => {
     // Get query1 and query2
     const q1 = searchByTitle.trim().toLowerCase();
-    const q2 = searchByCity.trim().toLowerCase();
+    const q2 = searchByCompanyName.trim().toLowerCase();
     // storing jobs in lists
     let lists = Array.isArray(jobs) ? jobs : [];
     // check if q1 exist then we performance filter by it title
@@ -62,10 +60,12 @@ const Home = () => {
         return t.includes(q1);
       });
     }
-    // check if q2 exist then we performance filter by location
+    // check if q2 exist then we performance filter by company name
     if (q2.length > 0) {
       lists = lists.filter((list) => {
-        const t = (list.location || "").toLowerCase();
+        const companyName = list?.company?.name;
+        // console.log(companyName);
+        const t = (companyName || "").toLowerCase();
         return t.includes(q2);
       });
     }
@@ -93,7 +93,7 @@ const Home = () => {
 
     return lists;
   }, [
-    searchByCity,
+    searchByCompanyName,
     searchByTitle,
     sort,
     jobs,
@@ -102,7 +102,7 @@ const Home = () => {
   ]);
 
   const handleClearSearch = () => {
-    setSearchByCity("");
+    setSearchByCompanyName("");
     setSearchByTitle("");
     setSort("newest");
     setSelectedCategory("");
@@ -142,10 +142,10 @@ const Home = () => {
                 <div className="hidden md:block w-px h-6 bg-gray-300"></div>
                 <input
                   type="text"
-                  value={searchByCity}
-                  onChange={(e) => setSearchByCity(e.target.value)}
+                  value={searchByCompanyName}
+                  onChange={(e) => setSearchByCompanyName(e.target.value)}
                   className="w-full outline-none text-sm"
-                  placeholder="Search by city"
+                  placeholder="Search by Company name"
                 />
               </div>
               <button className="w-full md:w-auto bg-cyan-400 hover:bg-cyan-500 text-white p-3 rounded-lg transition-colors flex justify-center shadow-md active:scale-95">
@@ -193,7 +193,7 @@ const Home = () => {
       </div>
       <div className="w-full h-auto mt-20 md:py-10 md:px-25 py-40 px-4 space-y-4">
         <div className="max-w-8xl flex justify-between items-center">
-          <p className="text-base font-semibold">Showing Result (912)</p>
+          <p className="text-base font-semibold">Showing Result ({jobs.length})</p>
           <div className="flex gap-x-1.5 items-center">
             <label htmlFor="sort">Sort:</label>
             <select
@@ -255,6 +255,17 @@ const Home = () => {
                         120 Applications
                       </p>
                     </div>
+                    <p className="text-sm mt-1">
+                      {job.vacancies > 0 ? (
+                        <span className="text-green-600 font-medium">
+                          🟢 {job.vacancies} positions available
+                        </span>
+                      ) : (
+                        <span className="text-red-500 font-medium">
+                          🔴 Position filled
+                        </span>
+                      )}
+                    </p>
                   </div>
                 </div>
 
@@ -304,7 +315,7 @@ const Home = () => {
                     </div>
                     <Link
                       to={`/jobs/${job?.id}/view`}
-                      className="flex-1 sm:flex-none border border-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium transition-all hover:bg-gray-50 active:scale-95 cursor-pointer text-nowrap text-sm">
+                      className="flex-1 text-center sm:flex-none border border-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium transition-all hover:bg-gray-50 active:scale-95 cursor-pointer text-nowrap text-sm">
                       View Details
                     </Link>
                     <button className="bg-cyan-400 text-white px-5 py-2 rounded-lg font-semibold transition-all hover:bg-cyan-500 active:scale-95 cursor-pointer shadow-sm text-nowrap">

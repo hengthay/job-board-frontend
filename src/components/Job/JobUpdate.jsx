@@ -6,6 +6,7 @@ import { fetchJobCategories, selectJobCategories, selectJobCategoriesStatus } fr
 import { fetchJobTypes, selectJobTypes, selectJobTypeStatus } from '../../feature/jobtype/jobTypeSlice';
 import Swal from 'sweetalert2';
 import { fetchIndividualJob, selectJobDetail, updateJob } from '../../feature/jobs/jobSlice';
+import { resetCompanyStatus } from '../../feature/company/companySlice';
 
 const JobUpdate = () => {
 
@@ -137,6 +138,7 @@ const JobUpdate = () => {
         timer: 2000,
       });
 
+      dispatch(resetCompanyStatus())
       const timeOut = setTimeout(() => {
         navigate('/');
       }, 2000);

@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
 import { CiLocationOn } from "react-icons/ci";
-import { FaLinkedin, FaGithub, FaGlobe, FaEnvelope, FaFileDownload, FaEdit } from "react-icons/fa";
+import { FaLinkedin, FaGithub, FaGlobe, FaEnvelope, FaFileDownload, FaEdit, FaTrash, FaCheckCircle } from "react-icons/fa";
+import Swal from "sweetalert2";
+import { useDispatch } from "react-redux";
+import { removeResume } from "../../feature/resume/resumeSlice";
+import { resetCompanyStatus } from "../../feature/company/companySlice";
 
 const CandidateProfile = ({ data }) => {
   const profile = Array.isArray(data) ? data[0] : data;
@@ -8,6 +12,44 @@ const CandidateProfile = ({ data }) => {
   const memberSince = profile?.created_at
     ? new Date(profile.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
     : 'N/A';
+
+  const dispatch = useDispatch();
+
+  const handleDelete = async (id) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "This Resume will be permanently deleted!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Yes, delete it",
+      cancelButtonText: "Cancel",
+    });
+
+    if (!result.isConfirmed) return; // ❌ user canceled
+    try {
+      await dispatch(removeResume(id)).unwrap();
+
+      // Reload Company Data
+      dispatch(resetCompanyStatus());
+
+      Swal.fire({
+        title: "Deleted",
+        text: "Resume has been deleted successfully!",
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false,
+      });
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        title: "Failed",
+        text: `Your Resume could not be deleted. ${error.message}`,
+        icon: "error",
+      });
+    }
+  };
 
   return (
     <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden my-8">
@@ -48,43 +90,99 @@ const CandidateProfile = ({ data }) => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-12">
           {/* Main Content */}
+          {/* Main Content */}
           <div className="md:col-span-2 space-y-10">
             <section>
               <h3 className="text-sm uppercase tracking-widest font-bold text-gray-400 mb-4">About Me</h3>
               <p className="text-gray-700 leading-relaxed text-lg">
                 {profile?.summary || "Professional summary not provided."}
               </p>
-              <hr className="my-2"/>
             </section>
 
-            <section className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="p-5 bg-blue-50/50 border border-blue-100 rounded-xl">
-                <p className="text-xs uppercase font-bold text-blue-500 mb-2">Resume / CV</p>
-                {profile?.resume?.length > 0 ? (
-                  <a
-                    href={profile.resume[0].file_path}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-blue-700 font-semibold hover:text-blue-800"
-                  >
-                    <FaFileDownload /> View Document
-                  </a>
+            {/* --- NEW UPDATED RESUME SECTION --- */}
+            <section>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-sm uppercase tracking-widest font-bold text-gray-400">My Resumes</h3>
+                <Link 
+                  to='/resumes/create'
+                  className="text-xs bg-blue-50 text-blue-600 px-3 py-1 rounded-full font-bold hover:bg-blue-100 transition-colors"
+                >
+                  + Add New
+                </Link>
+              </div>
+
+              <div className="space-y-3">
+                {profile?.resumes?.length > 0 ? (
+                  profile.resumes.map((resume) => (
+                    <div 
+                      key={resume.id} 
+                      className={`p-4 border rounded-xl flex items-center justify-between transition-all ${
+                        resume.is_default 
+                        ? 'border-blue-200 bg-blue-50/30 ring-1 ring-blue-100' 
+                        : 'border-gray-100 bg-white hover:border-gray-300'
+                      }`}
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className={`p-3 rounded-lg ${resume.is_default ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-400'}`}>
+                          <FaFileDownload size={18} />
+                        </div>
+                        <div className="space-y-1.5">
+                          <div className="flex items-center gap-2">
+                             <a 
+                                href={`${import.meta.env.VITE_API_URL}/storage/${resume.file_path}`}
+                                target="_blank"
+                                className="text-sm font-bold text-gray-800 hover:text-blue-600 truncate max-w-37.5 md:max-w-xs"
+                             >
+                               {resume.file_name || "Resume File"}
+                             </a>
+                             {resume.is_default === 1 && (
+                               <span className="flex items-center gap-1 text-[10px] bg-blue-600 text-white px-2 py-0.5 rounded-full font-bold uppercase tracking-tighter">
+                                 <FaCheckCircle size={8} /> Default
+                               </span>
+                             )}
+                          </div>
+                          <p className="text-xs text-gray-400">Uploaded on {new Date(resume.created_at).toLocaleDateString()}</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <Link 
+                          to={`/resumes/${resume.id}/edit`}
+                          className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                          title="Edit Resume"
+                        >
+                          <FaEdit size={16} />
+                        </Link>
+                        <button 
+                          onClick={() => handleDelete(resume.id)}
+                          className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                          title="Delete Resume"
+                        >
+                          <FaTrash size={14} />
+                        </button>
+                      </div>
+                    </div>
+                  ))
                 ) : (
-                  <div className="mt-4 p-4 border border-dashed rounded-lg text-center">
-                    <p className="text-sm text-gray-500 italic">No resume uploaded</p>
-                    <Link 
-                      to={'/resumes/create'}
-                      className="text-blue-600 text-sm font-bold hover:underline">
-                      + Add Social Media
+                  <div className="mt-4 md:px-4 md:py-8 p-4 border border-dashed rounded-lg text-center">
+                    <p className="text-sm text-gray-500">
+                      No Resume yet.
+                    </p>
+                    <Link
+                      to={"/resumes/create"}
+                      className="text-blue-600 text-sm font-bold hover:underline"
+                    >
+                      + Add Resume
                     </Link>
                   </div>
                 )}
               </div>
-              
-              <div className="p-5 bg-gray-50 border border-gray-100 rounded-xl">
-                <p className="text-xs uppercase font-bold text-gray-400 mb-2">Member Status</p>
-                <p className="text-gray-800 font-semibold">Active since {memberSince}</p>
-              </div>
+            </section>
+            {/* --- END RESUME SECTION --- */}
+
+            <section className="p-5 bg-gray-50 border border-gray-100 rounded-xl">
+              <p className="text-xs uppercase font-bold text-gray-400 mb-2">Member Status</p>
+              <p className="text-gray-800 font-semibold">Active since {memberSince}</p>
             </section>
           </div>
 

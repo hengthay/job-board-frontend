@@ -201,7 +201,9 @@ const jobSlice = createSlice({
   name: "jobs",
   initialState,
   reducers: {
-
+    resetJobStatus: (state) => {
+      state.status = 'idle';
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -299,6 +301,7 @@ const jobSlice = createSlice({
 });
 
 export default jobSlice.reducer;
+export const { resetJobStatus } = jobSlice.actions; 
 export const selectJobs = (state) => state.jobs.jobData;
 export const selectJobStatus = (state) => state.jobs.status;
 export const selectJobError = (state) => state.jobs.error;

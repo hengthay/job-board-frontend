@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { createCandidateProfile } from "../../feature/candidateProfile/candidateProfileSlice";
+import { resetCompanyStatus } from "../../feature/company/companySlice";
 const ProfileCreate = () => {
 
   const [form, setForm] = useState({
@@ -67,6 +68,8 @@ const ProfileCreate = () => {
       }
 
       await dispatch(createCandidateProfile(formData)).unwrap();
+
+      dispatch(resetCompanyStatus());
 
       Swal.fire({
         title: "Success",

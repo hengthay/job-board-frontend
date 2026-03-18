@@ -11,7 +11,6 @@ const initialState = {
 export const loginUser = createAsyncThunk(
   'auths/loginUser', async ({ payload }, thunkAPI) => {
     try {
-      console.log('payload in redux', payload);
       const res = await axiosInstance.post(`${API_BASE_URL}/login`, payload, {
         withCredentials: true
       });

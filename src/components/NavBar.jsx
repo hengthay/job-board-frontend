@@ -85,7 +85,11 @@ const NavBar = ({ isOpen, handleOpenMenu }) => {
     <header className="w-full container mx-auto">
       <div className="flex justify-between items-center min-h-16">
         {/* Logo */}
-        <img src={logoImage} alt="logo" className="w-36 object-contain" />
+        <Link
+          to={'/'}
+          >
+          <img src={logoImage} alt="logo" className="w-36 object-contain" />
+        </Link>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-4">
@@ -223,13 +227,36 @@ const NavBar = ({ isOpen, handleOpenMenu }) => {
           <span className="text-gray-800 text-base text-nowrap hover:bg-gray-200 transition-colors duration-300 w-full py-1.5 px-2 font-medium">
             {user?.user?.email}
           </span>
-          <Link
-            to={"/my-jobs"}
-            className="text-nowrap text-base hover:bg-gray-200 transition-colors duration-300 w-full py-1.5 px-2 cursor-pointer"
-          >
-            {/* <LiaUserLockSolid size={28} /> */}
-            View Jobs
-          </Link>
+          {
+            user?.user?.role === "employer" && (
+              <Link
+                to={"/my-jobs"}
+                className="text-nowrap text-base hover:bg-gray-200 transition-colors duration-300 w-full py-1.5 px-2 cursor-pointer"
+              >
+                View Jobs
+              </Link>
+            )
+          }
+          {
+            user?.user?.role === "user" && (
+              <Link
+                to={"/"}
+                className="text-nowrap text-base hover:bg-gray-200 transition-colors duration-300 w-full py-1.5 px-2 cursor-pointer"
+              >
+                Favourite Jobs
+              </Link>
+            )
+          }
+          {
+            user?.user?.role === "admin" && (
+              <Link
+                to={"/"}
+                className="text-nowrap text-base hover:bg-gray-200 transition-colors duration-300 w-full py-1.5 px-2 cursor-pointer"
+              >
+                Dashboard
+              </Link>
+            )
+          }
           <Link
             to={"/profiles"}
             className="text-nowrap text-base hover:bg-gray-200 transition-colors duration-300 w-full py-1.5 px-2 cursor-pointer"

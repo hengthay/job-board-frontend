@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { FaRegUser } from 'react-icons/fa';
 import EyeToggleIcon from '../components/Helper/EyeToggleIcon';
-import { useDispatch, useSelector } from 'react-redux';
-import { loginUser, selectUser } from '../feature/auth/authSlice';
+import { useDispatch } from 'react-redux';
+import { loginUser } from '../feature/auth/authSlice';
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { resetCompanyStatus } from '../feature/company/companySlice';
+import { resetJobStatus } from '../feature/jobs/jobSlice';
 
 const Login = () => {
 
@@ -13,9 +15,7 @@ const Login = () => {
     password: ''
   });
 
-  const user = useSelector(selectUser);
   const navigate = useNavigate();
-  // console.log('user', user);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(null);
   const [isError, setIsError] = useState(null);
@@ -56,9 +56,11 @@ const Login = () => {
         icon: 'success',
         timer: 2000,
       })
-
+      
       const timeOut = setTimeout(() => {
-        navigate('/')
+        dispatch(resetCompanyStatus());
+        dispatch(resetJobStatus());
+        navigate('/');
       }, 2000);
 
       // Clear form
