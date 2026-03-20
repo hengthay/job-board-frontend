@@ -50,6 +50,9 @@ const Login = () => {
 
       await dispatch(loginUser({ payload })).unwrap();
       
+      dispatch(resetCompanyStatus());
+      dispatch(resetJobStatus());
+
       Swal.fire({
         title: 'Success',
         text: "Your login is successful!",
@@ -58,8 +61,6 @@ const Login = () => {
       })
       
       const timeOut = setTimeout(() => {
-        dispatch(resetCompanyStatus());
-        dispatch(resetJobStatus());
         navigate('/');
       }, 2000);
 

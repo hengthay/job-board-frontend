@@ -1,4 +1,3 @@
-import React from 'react'
 import Job from './pages/Job'
 import { Route, Routes } from 'react-router-dom'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -22,6 +21,9 @@ import CompanySocialCreate from './components/CompanySocial/CompanySocialCreate'
 import CompanySocialUpdate from './components/CompanySocial/CompanySocialUpdate'
 import ResumeCreate from './components/Resume/ResumeCreate'
 import ResumeUpdate from './components/Resume/ResumeUpdate'
+import ApplicationCreate from './components/Application/ApplicationCreate'
+import ApplicationUpdate from './components/Application/ApplicationUpdate'
+import ApplicationDetail from './components/Application/ApplicationDetail'
 
 const App = () => { 
   return ( 
@@ -47,6 +49,10 @@ const App = () => {
             <Route path='/my-jobs' element={<Job />}/> 
             <Route path='/jobs/create' element={<JobCreate />}/> 
             <Route path='/jobs/:id/edit' element={<JobUpdate />}/> 
+            <Route path='/applications/apply-jobs' element={<Application />}/>
+            <Route path="/applications/:jobId/apply" element={<ApplicationCreate />}/>
+            <Route path="/applications/:id/detail" element={<ApplicationDetail />}/>
+            <Route path="/applications/:id/edit" element={<ApplicationUpdate />}/>
         </Route> 
       </Route> 
       <Route path='/login' element={<Login />}/> 

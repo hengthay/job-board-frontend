@@ -318,9 +318,11 @@ const Home = () => {
                       className="flex-1 text-center sm:flex-none border border-gray-300 text-gray-700 px-4 py-2 rounded-lg font-medium transition-all hover:bg-gray-50 active:scale-95 cursor-pointer text-nowrap text-sm">
                       View Details
                     </Link>
-                    <button className="bg-cyan-400 text-white px-5 py-2 rounded-lg font-semibold transition-all hover:bg-cyan-500 active:scale-95 cursor-pointer shadow-sm text-nowrap">
+                    <Link 
+                      to={`/applications/${job?.id}/apply`}
+                      className="bg-cyan-400 text-white px-5 py-2 rounded-lg font-semibold transition-all hover:bg-cyan-500 active:scale-95 cursor-pointer shadow-sm text-nowrap">
                       Apply Now
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </div>

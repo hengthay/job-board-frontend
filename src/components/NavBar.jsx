@@ -30,6 +30,15 @@ const NavBar = ({ isOpen, handleOpenMenu }) => {
   const handleSettingClick = () => setUserSetting((prev) => !prev);
   const showMobile = isOpen || isVisible;
 
+  // To handle close all menu and userSetting
+  const handleCloseAll = () => {
+    setUserSetting(false); // close dropdown
+
+    // only close in mobile menu if on small screen
+    if(window.innerWidth < 768) {
+      handleCloseAll();
+    }
+  }
   const menuLists = [
     {
       id: 1,
@@ -168,7 +177,7 @@ const NavBar = ({ isOpen, handleOpenMenu }) => {
       {/* Mobile Menu */}
       {showMobile && (
         <div
-          className={`w-full md:hidden fixed inset-0 z-40 transition-opacity duration-200 ${isOpen ? "opacity-100" : "opacity-0"} mt-15 bg-cyan-100`}
+          className={`w-full md:hidden h-60 fixed inset-0 z-40 transition-opacity duration-200 ${isOpen ? "opacity-100" : "opacity-0"} mt-15 bg-cyan-100`}
           onClick={handleOpenMenu} // click outside closes
         >
           <div className="w-full md:hidden flex flex-col items-start gap-6 py-6 mx-6">
@@ -190,7 +199,10 @@ const NavBar = ({ isOpen, handleOpenMenu }) => {
                     <button
                       type="button"
                       className="text-black cursor-pointer"
-                      onClick={handleSettingClick}
+                      onClick={(e) => {
+                        e.stopPropagation() // prevent bubbling
+                        handleSettingClick();
+                      }}
                     >
                       {user?.user?.name[0].toUpperCase()}
                     </button>
@@ -220,7 +232,7 @@ const NavBar = ({ isOpen, handleOpenMenu }) => {
 
       {userSetting && (
         <div
-          className={`flex flex-col justify-start items-start absolute top-17 right-23 bg-white min-w-62.5 p-1.5 z-10 ${
+          className={`flex flex-col justify-start items-start shadow absolute md:top-17 md:right-23 max-sm:left-13 top-65 bg-white min-w-62.5 p-1.5 z-50 ${
             userSetting ? "opacity-100" : "opacity-0"
           }`}
         >
@@ -229,28 +241,49 @@ const NavBar = ({ isOpen, handleOpenMenu }) => {
           </span>
           {
             user?.user?.role === "employer" && (
-              <Link
-                to={"/my-jobs"}
-                className="text-nowrap text-base hover:bg-gray-200 transition-colors duration-300 w-full py-1.5 px-2 cursor-pointer"
-              >
-                View Jobs
-              </Link>
+              <>
+                <Link
+                  to={"/my-jobs"}
+                  onClick={handleCloseAll}
+                  className="text-nowrap text-base hover:bg-gray-200 transition-colors duration-300 w-full py-1.5 px-2 cursor-pointer"
+                >
+                  View Jobs
+                </Link>
+                <Link
+                  to={"/applications/apply-jobs"}
+                  onClick={handleCloseAll}
+                  className="text-nowrap text-base hover:bg-gray-200 transition-colors duration-300 w-full py-1.5 px-2 cursor-pointer"
+                >
+                  View Jobs Applied
+                </Link>
+              </>
             )
           }
           {
             user?.user?.role === "user" && (
-              <Link
-                to={"/"}
-                className="text-nowrap text-base hover:bg-gray-200 transition-colors duration-300 w-full py-1.5 px-2 cursor-pointer"
-              >
-                Favourite Jobs
-              </Link>
+              <>
+                <Link
+                  to={"/"}
+                  onClick={handleCloseAll}
+                  className="text-nowrap text-base hover:bg-gray-200 transition-colors duration-300 w-full py-1.5 px-2 cursor-pointer"
+                >
+                  Favourite Jobs
+                </Link>
+                <Link
+                  to={"/applications/apply-jobs"}
+                  onClick={handleCloseAll}
+                  className="text-nowrap text-base hover:bg-gray-200 transition-colors duration-300 w-full py-1.5 px-2 cursor-pointer"
+                >
+                  My Apply Job
+                </Link>
+              </>
             )
           }
           {
             user?.user?.role === "admin" && (
               <Link
                 to={"/"}
+                onClick={handleCloseAll}
                 className="text-nowrap text-base hover:bg-gray-200 transition-colors duration-300 w-full py-1.5 px-2 cursor-pointer"
               >
                 Dashboard
@@ -259,6 +292,7 @@ const NavBar = ({ isOpen, handleOpenMenu }) => {
           }
           <Link
             to={"/profiles"}
+            onClick={handleCloseAll}
             className="text-nowrap text-base hover:bg-gray-200 transition-colors duration-300 w-full py-1.5 px-2 cursor-pointer"
           >
             {/* <LiaUserLockSolid size={28} /> */}
@@ -267,8 +301,12 @@ const NavBar = ({ isOpen, handleOpenMenu }) => {
           <hr className="text-gray-300 w-56.25 mx-auto" />
           <button
             type="button"
+            
             className="px-2 py-1.5 cursor-pointer w-full bg-cyan-400 my-2 rounded-md text-white hover:bg-cyan-500 transition-colors ease-linear duration-300"
-            onClick={handleLogout}
+            onClick={() => {
+              handleLogout();
+              handleCloseAll();
+            }}
           >
             Sign Out
           </button>

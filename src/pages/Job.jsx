@@ -48,7 +48,7 @@ const Job = () => {
               <div className="flex items-center mt-6 gap-x-2 py-1.5 my-8">
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
                 <p className="text-black font-medium">Loading<span className="animate-pulse">...</span></p>
-            </div>
+              </div>
             )
           }
           {
