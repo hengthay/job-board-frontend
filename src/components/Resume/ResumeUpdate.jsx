@@ -91,7 +91,7 @@ const ResumeUpdate = () => {
 
       // Reload Company Data
       dispatch(resetCompanyStatus());
-      
+      dispatch(clearResumeDetail());
 
       Swal.fire({
         title: "Success",

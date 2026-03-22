@@ -170,7 +170,7 @@ const companySlice = createSlice({
       })
       .addCase(fetchCompany.rejected, (state, action) => {
         state.error = action.payload || 'Something went wrong!'
-        state.companyStatus = 'failed';
+        state.status = 'failed';
       })
       .addCase(fetchCompanyById.pending, (state) => {
         state.error = null;

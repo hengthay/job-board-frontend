@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { FiSave, FiUpload } from 'react-icons/fi';
 import { resetCompanyStatus } from '../../feature/company/companySlice';
-import { createResume } from '../../feature/resume/resumeSlice';
+import { clearResumeDetail, createResume } from '../../feature/resume/resumeSlice';
 
 const ResumeCreate = () => {
 
@@ -57,7 +57,7 @@ const ResumeCreate = () => {
 
       // Reload Company Data
       dispatch(resetCompanyStatus());
-      
+      dispatch(clearResumeDetail());
 
       Swal.fire({
         title: "Success",

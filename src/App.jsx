@@ -24,6 +24,7 @@ import ResumeUpdate from './components/Resume/ResumeUpdate'
 import ApplicationCreate from './components/Application/ApplicationCreate'
 import ApplicationUpdate from './components/Application/ApplicationUpdate'
 import ApplicationDetail from './components/Application/ApplicationDetail'
+import SaveJob from './pages/SaveJob'
 
 const App = () => { 
   return ( 
@@ -36,6 +37,7 @@ const App = () => {
         <Route element={<ProtectedRoute />}> 
             <Route path='/applications' element={<Application />}/> 
             <Route path='/companies' element={<Company />}/> 
+            <Route path='/my-favorite-jobs' element={<SaveJob />}/> 
             <Route path='/companies/create' element={<CompanyCreate />}/> 
             <Route path='/companies/:id/edit' element={<CompanyUpdate />}/> 
             <Route path='/company-socials/create' element={<CompanySocialCreate />}/> 

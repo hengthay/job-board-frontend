@@ -12,6 +12,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { fetchIndividualJob, selectJobDetail, selectJobStausDetail } from '../../feature/jobs/jobSlice';
 import formatDate from '../Helper/formateDate';
+import Swal from 'sweetalert2';
+import { resetSaveJobStatus, saveFavoriteJob } from '../../feature/saveJob/saveJobSlice';
 
 const JobDetail = () => {
   const jobDetail = useSelector(selectJobDetail);
@@ -24,6 +26,41 @@ const JobDetail = () => {
     if(id) dispatch(fetchIndividualJob(id));
   }, [id]);
 
+  // Add to favorite job
+  const addToFavoriteJob = async (id) => {
+    try {
+      const result = await dispatch(saveFavoriteJob(id)).unwrap();
+
+      // Reset save job
+      dispatch(resetSaveJobStatus());
+
+      // If job already exists should display exist info to user.
+      if (result.message === "Job is already in your favorites!") {
+        Swal.fire({
+          title: "Info",
+          text: result.message,
+          icon: "info",
+          timer: 1500,
+        });
+      } else {
+        Swal.fire({
+          title: "Success",
+          text: "Job added to favorites successfully!",
+          icon: "success",
+          timer: 1500,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        title: "Failed",
+        text: `Your Job could not be add to favorite. ${error.message}`,
+        icon: "error",
+        timer: 1500,
+      });
+    }
+  };
+  
   console.log('job detail - ', jobDetail);
 
   return (
@@ -50,7 +87,10 @@ const JobDetail = () => {
               </div>
             </div>
             <div className="flex gap-3 w-full md:w-auto">
-              <button className="flex-1 md:flex-none p-3 rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors">
+              <button 
+                type='button'
+                onClick={() => addToFavoriteJob(jobDetail?.id)}
+                className="flex-1 md:flex-none p-3 rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer">
                 <CiBookmark size={24} className="mx-auto" />
               </button>
               <button className="flex-4 md:flex-none bg-cyan-400 hover:bg-cyan-500 text-white px-8 py-3 rounded-xl font-bold transition-all shadow-lg shadow-cyan-100">

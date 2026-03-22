@@ -3,7 +3,7 @@ import { FiSave } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
-import { applyApplication } from "../../feature/application/applicationSlice";
+import { applyApplication, resetApplications } from "../../feature/application/applicationSlice";
 import { fetchResumes, selectResumeData } from "../../feature/resume/resumeSlice";
 import { selectUser } from "../../feature/auth/authSlice";
 import { resetJobStatus } from "../../feature/jobs/jobSlice";
@@ -83,6 +83,7 @@ const ApplicationCreate = () => {
       
       // Reset Job status
       dispatch(resetJobStatus());
+      dispatch(resetApplications());
 
       Swal.fire({
         title: "Success",

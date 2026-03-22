@@ -177,7 +177,7 @@ const NavBar = ({ isOpen, handleOpenMenu }) => {
       {/* Mobile Menu */}
       {showMobile && (
         <div
-          className={`w-full md:hidden h-60 fixed inset-0 z-40 transition-opacity duration-200 ${isOpen ? "opacity-100" : "opacity-0"} mt-15 bg-cyan-100`}
+          className={`w-full md:hidden  fixed inset-0 z-40 transition-opacity duration-200 ${isOpen ? "opacity-100" : "opacity-0"} mt-15 bg-cyan-100`}
           onClick={handleOpenMenu} // click outside closes
         >
           <div className="w-full md:hidden flex flex-col items-start gap-6 py-6 mx-6">
@@ -263,7 +263,7 @@ const NavBar = ({ isOpen, handleOpenMenu }) => {
             user?.user?.role === "user" && (
               <>
                 <Link
-                  to={"/"}
+                  to={"/my-favorite-jobs"}
                   onClick={handleCloseAll}
                   className="text-nowrap text-base hover:bg-gray-200 transition-colors duration-300 w-full py-1.5 px-2 cursor-pointer"
                 >

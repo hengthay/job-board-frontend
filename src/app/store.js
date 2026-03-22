@@ -8,6 +8,7 @@ import candidateProfileReducer from "../feature/candidateProfile/candidateProfil
 import companySocialReducer from "../feature/companySocial/companySocialSlice";
 import resumeReducer from "../feature/resume/resumeSlice";
 import applicationReducer from "../feature/application/applicationSlice";
+import saveJobReducer from "../feature/saveJob/saveJobSlice";
 
 const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ const store = configureStore({
     companySocials: companySocialReducer,
     resumes: resumeReducer,
     applications: applicationReducer,
+    saveJobs: saveJobReducer,
   }
 });
 

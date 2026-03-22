@@ -25,7 +25,7 @@ export const fetchApplications = createAsyncThunk(
 
       return res?.data?.data ?? [];
     } catch (error) {
-      const msg = error?.respones?.data?.message;
+      const msg = error?.response?.data?.message;
       console.log('Error to fetch applications data - ', msg);
       return thunkAPI.rejectWithValue(msg);
     }
@@ -46,7 +46,7 @@ export const fetchApplicationById = createAsyncThunk(
 
       return res?.data?.data ?? null;
     } catch (error) {
-      const msg = error?.respones?.data?.message;
+      const msg = error?.response?.data?.message;
       console.log('Error to fetch applications data detail - ', msg);
       return thunkAPI.rejectWithValue(msg);
     }
@@ -71,7 +71,7 @@ export const applyApplication = createAsyncThunk(
 
       return res?.data?.data ?? [];
     } catch (error) {
-      const msg = error?.respones?.data?.message;
+      const msg = error?.response?.data?.message;
       console.log('Error to apply application - ', msg);
       return thunkAPI.rejectWithValue(msg);
     }
@@ -98,7 +98,7 @@ export const updateApplication = createAsyncThunk(
 
       return res?.data?.data ?? [];
     } catch (error) {
-      const msg = error?.respones?.data?.message;
+      const msg = error?.response?.data?.message;
       console.log('Error to update application - ', msg);
       return thunkAPI.rejectWithValue(msg);
     }
@@ -117,7 +117,7 @@ export const removeApplicatoin = createAsyncThunk(
 
       return thunkAPI.rejectWithValue(`Failed to remove application with id:${id} !`);
     } catch (error) {
-      const msg = error?.respones?.data?.message;
+      const msg = error?.response?.data?.message;
       console.log('Error to update application - ', msg);
       return thunkAPI.rejectWithValue(msg);
     }

@@ -77,12 +77,12 @@ const JobCard = ({ job }) => {
         </div>
 
         {/* Middle Section: Stats */}
-        <div className="flex items-center gap-8 px-4">
+        <div className="flex items-center gap-8 md:px-4 px-0">
           <div className="text-center">
             <p className="text-xs text-gray-400 uppercase font-semibold tracking-wider">
               Applications
             </p>
-            <div className="flex items-center justify-center gap-1 text-cyan-600 mt-1">
+            <div className="flex items-center md:justify-center justify-start gap-1 text-cyan-600 mt-1">
               <HiOutlineUsers size={18} />
               <span className="font-bold text-lg">45</span>
             </div>

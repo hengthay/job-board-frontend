@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { CiSearch } from "react-icons/ci";
+import { CiBookmark, CiSearch } from "react-icons/ci";
 import { CiLocationOn } from "react-icons/ci";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,6 +19,8 @@ import {
   selectJobCategoriesStatus,
 } from "../feature/jobcategories/jobCategoriesSlice";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
+import { resetSaveJobStatus, saveFavoriteJob } from "../feature/saveJob/saveJobSlice";
 
 const Home = () => {
   const jobs = useSelector(selectJobs);
@@ -108,6 +110,41 @@ const Home = () => {
     setSelectedCategory("");
     setSelectedJobType("");
   };
+
+  // Add to favorite job
+  const addToFavoriteJob = async (id) => {
+    try {
+      const result = await dispatch(saveFavoriteJob(id)).unwrap();
+      // Reset save job
+      dispatch(resetSaveJobStatus());
+
+      // If job already exists should display exist info to user.
+      if (result.message === "Job is already in your favorites!") {
+        Swal.fire({
+          title: "Info",
+          text: result.message,
+          icon: "info",
+          timer: 1500,
+        });
+      } else {
+        Swal.fire({
+          title: "Success",
+          text: "Job added to favorites successfully!",
+          icon: "success",
+          timer: 1500,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        title: "Failed",
+        text: `Your Job could not be add to favorite. ${error.message}`,
+        icon: "error",
+        timer: 1500,
+      });
+    }
+  };
+  
   // console.log('jobcategories - ', jobCategories);
   // console.log('jobtype - ', jobTypes);
   // console.log('selectedCategory', selectedCategory);
@@ -230,43 +267,50 @@ const Home = () => {
                 key={job.id}
               >
                 {/* Top Section: Logo and Header Info */}
-                <div className="w-full flex items-start gap-4">
-                  <div className="shrink-0">
-                    <img
-                      src={`${import.meta.env.VITE_API_URL}/storage/${job?.company?.logo_path}`}
-                      alt={job?.company?.name}
-                      className="object-cover w-16 h-16 md:w-24 md:h-24 rounded-xl border border-gray-100"
-                    />
-                  </div>
+                <div className="flex justify-between items-start">
+                  <div className="w-full flex items-start gap-4">
+                    <div className="shrink-0">
+                      <img
+                        src={`${import.meta.env.VITE_API_URL}/storage/${job?.company?.logo_path}`}
+                        alt={job?.company?.name}
+                        className="object-cover w-16 h-16 md:w-24 md:h-24 rounded-xl border border-gray-100"
+                      />
+                    </div>
 
-                  <div className="flex-1 flex flex-col min-w-0">
-                    <h2 className="md:text-xl text-lg font-bold tracking-tight text-gray-900 truncate">
-                      {job?.title}
-                    </h2>
-                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1 text-sm md:text-base text-gray-600">
-                      <p className="font-semibold text-gray-800">
-                        {job?.company?.name}
-                      </p>
-                      <div className="flex items-center gap-1">
-                        <CiLocationOn size={18} className="text-gray-400" />
-                        <span>Remote</span>
+                    <div className="flex-1 flex flex-col min-w-0">
+                      <h2 className="md:text-xl text-lg font-bold tracking-tight text-gray-900 truncate">
+                        {job?.title}
+                      </h2>
+                      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-1 text-sm md:text-base text-gray-600">
+                        <p className="font-semibold text-gray-800">
+                          {job?.company?.name}
+                        </p>
+                        <div className="flex items-center gap-1">
+                          <CiLocationOn size={18} className="text-gray-400" />
+                          <span>Remote</span>
+                        </div>
+                        <p className="text-cyan-600 font-medium">
+                          120 Applications
+                        </p>
                       </div>
-                      <p className="text-cyan-600 font-medium">
-                        120 Applications
+                      <p className="text-sm mt-1">
+                        {job.vacancies > 0 ? (
+                          <span className="text-green-600 font-medium">
+                            🟢 {job.vacancies} positions available
+                          </span>
+                        ) : (
+                          <span className="text-red-500 font-medium">
+                            🔴 Position filled
+                          </span>
+                        )}
                       </p>
                     </div>
-                    <p className="text-sm mt-1">
-                      {job.vacancies > 0 ? (
-                        <span className="text-green-600 font-medium">
-                          🟢 {job.vacancies} positions available
-                        </span>
-                      ) : (
-                        <span className="text-red-500 font-medium">
-                          🔴 Position filled
-                        </span>
-                      )}
-                    </p>
                   </div>
+                  <button 
+                    onClick={() => addToFavoriteJob(job?.id)}
+                    className="flex-1 md:flex-none p-3 rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer">
+                    <CiBookmark size={24} className="mx-auto" />
+                  </button>
                 </div>
 
                 {/* Middle Section: Description & Tags */}

@@ -134,6 +134,9 @@ const candidateProfileSlice = createSlice({
       state.candidateProfileDetailData = null;
       state.statusDetail = 'idle';
     },
+    resetCandidateProfile: (state) => {
+      state.status = 'idle';
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -231,7 +234,7 @@ const candidateProfileSlice = createSlice({
 })
 
 export default candidateProfileSlice.reducer;
-export const { resetCandidateProfileDetail } = candidateProfileSlice.actions;
+export const { resetCandidateProfileDetail, resetCandidateProfile } = candidateProfileSlice.actions;
 export const selectCandidateProfileData = (state) => state.candidateProfile.candidateProfileData;
 export const selectCandidateProfileStatus = (state) => state.candidateProfile.status;
 export const selectCandidateProfileError = (state) => state.candidateProfile.error;
