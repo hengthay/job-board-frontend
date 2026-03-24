@@ -54,7 +54,7 @@ const ApplicationUpdate = () => {
     }
   }, [applicationDetail])
 
-  console.log('Application detail - ', applicationDetail);
+  // console.log('Application detail - ', applicationDetail);
   const handleOnChange = (e) => {
     const { name, value } = e.target;
 
@@ -71,10 +71,14 @@ const ApplicationUpdate = () => {
       setLoading(true);
 
       const formData = new FormData();
-      formData.append('status', form.status);
-      formData.append('employer_note', form.employer_note);
+
       formData.append('cover_letter', form.cover_letter);
-      formData.append('reviewed_at', form.reviewed_at);
+      // If role equal to employer then we append that data also.
+      if(isEmployer) {
+        formData.append('status', form.status);
+        formData.append('employer_note', form.employer_note);
+        formData.append('reviewed_at', form.reviewed_at);
+      }
 
       await dispatch(updateApplication({ id, formData })).unwrap();
       
@@ -116,7 +120,7 @@ const ApplicationUpdate = () => {
     }
   };
 
-  // console.log('formData - ', form);
+  console.log('formData - ', form);
   
   // Check user role
   const isUser = user?.user?.role === 'user';
@@ -239,7 +243,7 @@ const ApplicationUpdate = () => {
             {/* Actions */}
             <div className="flex justify-end gap-3 pt-4">
               <Link
-                to="/"
+                to="/applications/apply-jobs"
                 className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 text-sm font-medium hover:bg-gray-100 transition"
               >
                 Cancel

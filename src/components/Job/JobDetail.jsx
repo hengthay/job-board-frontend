@@ -9,18 +9,24 @@ import {
 } from "react-icons/ci";
 import { HiOutlineOfficeBuilding } from "react-icons/hi";
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { fetchIndividualJob, selectJobDetail, selectJobStausDetail } from '../../feature/jobs/jobSlice';
+import { Link, useParams } from 'react-router-dom';
+import { fetchIndividualJob, selectJobDetail, selectJobError, selectJobStausDetail } from '../../feature/jobs/jobSlice';
 import formatDate from '../Helper/formateDate';
 import Swal from 'sweetalert2';
 import { resetSaveJobStatus, saveFavoriteJob } from '../../feature/saveJob/saveJobSlice';
+import { selectUser } from '../../feature/auth/authSlice';
 
 const JobDetail = () => {
+
   const jobDetail = useSelector(selectJobDetail);
   const jobStatusDetail = useSelector(selectJobStausDetail);
+  const jobError = useSelector(selectJobError);
+
+  // Get current user
+  const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const { id } = useParams();
-  console.log('job id - ', id);
+  // console.log('job id - ', id);
 
   useEffect(() => {
     if(id) dispatch(fetchIndividualJob(id));
@@ -61,7 +67,8 @@ const JobDetail = () => {
     }
   };
   
-  console.log('job detail - ', jobDetail);
+  // console.log('job detail - ', jobDetail);
+  const isUser = user?.user?.role === 'user';
 
   return (
     <div className="w-full bg-gray-50 min-h-screen pb-20">
@@ -87,28 +94,40 @@ const JobDetail = () => {
               </div>
             </div>
             <div className="flex gap-3 w-full md:w-auto">
-              <button 
-                type='button'
-                onClick={() => addToFavoriteJob(jobDetail?.id)}
-                className="flex-1 md:flex-none p-3 rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer">
-                <CiBookmark size={24} className="mx-auto" />
-              </button>
-              <button className="flex-4 md:flex-none bg-cyan-400 hover:bg-cyan-500 text-white px-8 py-3 rounded-xl font-bold transition-all shadow-lg shadow-cyan-100">
+              {
+                isUser && (
+                  <button 
+                    type='button'
+                    onClick={() => addToFavoriteJob(jobDetail?.id)}
+                    className="flex-1 md:flex-none p-3 rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer">
+                    <CiBookmark size={24} className="mx-auto" />
+                  </button>
+                )
+              }
+              <Link 
+                onClick={() => {
+                  if(!user) {
+                    return alert('Please login first before apply job!');
+                  }
+                }}
+                to={`/applications/${jobDetail?.id}/apply`}
+                className="flex-4 md:flex-none bg-cyan-400 hover:bg-cyan-500 text-white px-8 py-3 rounded-xl font-bold transition-all shadow-lg shadow-cyan-100">
                 Apply Now
-              </button>
+              </Link>
             </div>
           </div>
         </div>
         {
-          jobStatusDetail === 'loading' && (<div className="flex items-center gap-x-2 py-1.5 max-w-7xl mx-auto px-6 md:px-25 mt-8">
-            <p className="w-8 h-8 rounded-full border border-t-transparent animate-spin"></p>
-            <p className="text-black font-medium">Loading<span className="animate-pulse">...</span></p>
-          </div>
+          jobStatusDetail === 'loading' && (
+            <div className="flex items-center gap-x-2 py-1.5 max-w-7xl mx-auto px-6 md:px-25 my-8">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+              <p className="text-black font-medium">Loading<span className="animate-pulse">...</span></p>
+            </div>
           )
         }
         {jobStatusDetail === "failed" && (
           <div className="bg-red-400 py-1.5 px-3 rounded-md mt-8">
-            <p className="text-white">Failed to load jobs detail!</p>
+            <p className="text-white">Failed to load jobs detail, {jobError}!</p>
           </div>
         )}
       </div>

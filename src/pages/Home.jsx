@@ -5,6 +5,7 @@ import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchJobs,
+  selectJobError,
   selectJobs,
   selectJobStatus,
 } from "../feature/jobs/jobSlice";
@@ -21,14 +22,18 @@ import {
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { resetSaveJobStatus, saveFavoriteJob } from "../feature/saveJob/saveJobSlice";
+import { selectUser } from "../feature/auth/authSlice";
 
 const Home = () => {
   const jobs = useSelector(selectJobs);
   const jobStatus = useSelector(selectJobStatus);
   const jobTypes = useSelector(selectJobTypes);
+  const jobError = useSelector(selectJobError);
   const jobTypeStatus = useSelector(selectJobTypeStatus);
   const jobCategories = useSelector(selectJobCategories);
   const jobCategoryStatus = useSelector(selectJobCategoriesStatus);
+  // Get current user
+  const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const [searchByTitle, setSearchByTitle] = useState("");
   const [searchByCompanyName, setSearchByCompanyName] = useState("");
@@ -150,6 +155,9 @@ const Home = () => {
   // console.log('selectedCategory', selectedCategory);
   // console.log('selectedJobType', selectedJobType);
   // console.log("jobs data -", jobs);
+
+  const isUser = user?.user?.role === 'user';
+
   return (
     <div className="w-full">
       <div className="relative w-full max-sm:w-100 md:py-10 md:px-25 bg-cyan-100">
@@ -230,7 +238,7 @@ const Home = () => {
       </div>
       <div className="w-full h-auto mt-20 md:py-10 md:px-25 py-40 px-4 space-y-4">
         <div className="max-w-8xl flex justify-between items-center">
-          <p className="text-base font-semibold">Showing Result ({jobs.length})</p>
+          <p className="text-base font-semibold">Showing Result (<b>{filteredJob.length}</b>)</p>
           <div className="flex gap-x-1.5 items-center">
             <label htmlFor="sort">Sort:</label>
             <select
@@ -256,7 +264,7 @@ const Home = () => {
           )}
           {jobStatus === "failed" && (
             <div className="bg-red-400 py-1.5 px-3 rounded-md">
-              <p className="text-white">Failed to load jobs data!</p>
+              <p className="text-white">Failed to load jobs data, {jobError}!</p>
             </div>
           )}
           {jobs.length > 0 &&
@@ -306,11 +314,15 @@ const Home = () => {
                       </p>
                     </div>
                   </div>
-                  <button 
-                    onClick={() => addToFavoriteJob(job?.id)}
-                    className="flex-1 md:flex-none p-3 rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer">
-                    <CiBookmark size={24} className="mx-auto" />
-                  </button>
+                  {
+                    isUser && (
+                      <button 
+                        onClick={() => addToFavoriteJob(job?.id)}
+                        className="flex-1 md:flex-none p-3 rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer">
+                        <CiBookmark size={24} className="mx-auto" />
+                      </button>
+                    )
+                  }
                 </div>
 
                 {/* Middle Section: Description & Tags */}
@@ -363,6 +375,11 @@ const Home = () => {
                       View Details
                     </Link>
                     <Link 
+                      onClick={() => {
+                        if(!user) {
+                          return alert('Please login first before apply job!');
+                        }
+                      }}
                       to={`/applications/${job?.id}/apply`}
                       className="bg-cyan-400 text-white px-5 py-2 rounded-lg font-semibold transition-all hover:bg-cyan-500 active:scale-95 cursor-pointer shadow-sm text-nowrap">
                       Apply Now

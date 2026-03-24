@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FiSave, FiUpload } from "react-icons/fi";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { createCompanyProfile } from "../../feature/company/companySlice";
+import { createCompanyProfile, resetCompanyStatus } from "../../feature/company/companySlice";
 import Swal from "sweetalert2";
 
 const CompanyCreate = () => {
@@ -68,6 +68,8 @@ const CompanyCreate = () => {
       }
 
       await dispatch(createCompanyProfile(formData)).unwrap();
+
+      dispatch(resetCompanyStatus());
 
       Swal.fire({
         title: "Success",

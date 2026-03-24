@@ -104,12 +104,10 @@ const CompanyUpdate = () => {
         formData.append('logo_path', form.logo_path);
       }
 
-      const result = await dispatch(updateCompanyProfile({ id, formData })).unwrap();
+      await dispatch(updateCompanyProfile({ id, formData })).unwrap();
 
-      if(updateCompanyProfile.fulfilled.match(result)) {
-        dispatch(resetCompanyStatus());
-      }
-
+      dispatch(resetCompanyStatus());
+      
       Swal.fire({
         title: "Success",
         text: "Company Profile is updated successfully!",

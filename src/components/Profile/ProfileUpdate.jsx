@@ -3,7 +3,7 @@ import { FiSave, FiUpload } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
-import { fetchIndividualCandidateProfile, resetCandidateProfile, resetCandidateProfileDetail, selectCandidateProfileDetailData, updateCandidateProfile } from "../../feature/candidateProfile/candidateProfileSlice";
+import { fetchIndividualCandidateProfile, resetCandidateProfileDetail, resetCandidateProfileStatus, selectCandidateProfileDetailData, updateCandidateProfile } from "../../feature/candidateProfile/candidateProfileSlice";
 import { resetCompanyStatus } from "../../feature/company/companySlice";
 const ProfileUpdate = () => {
 
@@ -112,8 +112,7 @@ const ProfileUpdate = () => {
 
       await dispatch(updateCandidateProfile({ id, formData })).unwrap();
 
-      dispatch(resetCompanyStatus());
-      dispatch(resetCandidateProfile());
+      dispatch(resetCandidateProfileStatus());
 
       Swal.fire({
         title: "Success",

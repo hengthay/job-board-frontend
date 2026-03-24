@@ -4,7 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { FiSave, FiUpload } from 'react-icons/fi';
 import { resetCompanyStatus } from '../../feature/company/companySlice';
-import { clearResumeDetail, createResume } from '../../feature/resume/resumeSlice';
+import { createResume } from '../../feature/resume/resumeSlice';
+import { resetCandidateProfileStatus } from '../../feature/candidateProfile/candidateProfileSlice';
 
 const ResumeCreate = () => {
 
@@ -55,9 +56,9 @@ const ResumeCreate = () => {
 
       await dispatch(createResume(formData)).unwrap();
 
-      // Reload Company Data
+      // Reload Status Data
       dispatch(resetCompanyStatus());
-      dispatch(clearResumeDetail());
+      dispatch(resetCandidateProfileStatus());
 
       Swal.fire({
         title: "Success",

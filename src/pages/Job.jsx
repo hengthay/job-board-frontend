@@ -6,6 +6,7 @@ import JobCard from '../components/Job/JobCard';
 import { IoAdd } from "react-icons/io5";
 import { FaBriefcase } from 'react-icons/fa';
 import { resetCompanyStatus } from '../feature/company/companySlice';
+import { IoMdArrowBack } from 'react-icons/io';
 
 const Job = () => {
 
@@ -31,11 +32,19 @@ const Job = () => {
       <div className="max-w-8xl mx-auto px-6 md:px-25 mt-10">
         <div className='w-full border border-gray-300 shadow-lg rounded-md p-4'>
           <div className='flex justify-between items-start'>
-            <div className='space-y-2'>
-              <h3 className="font-bold md:text-3xl text-2xl text-gray-900">
-                My Posting Jobs List
-              </h3>
-              <p className="text-gray-500 mt-2">Manage and review the performance of your job listings.</p>
+            <div className='flex md:flex-row flex-col items-start md:space-y-1 space-y-1.5 gap-x-1.5'>
+              <Link
+                to={'/'}
+                className='mt-2'
+                >
+                <IoMdArrowBack size={24} className='text-gray-500 hover:text-cyan-500 transition-colors duration-300 ease-linear'/>
+              </Link>
+              <div className='space-y-2'>
+                <h3 className="font-bold md:text-3xl text-2xl text-gray-900">
+                  My Posting Jobs List
+                </h3>
+                <p className="text-gray-500 mt-2">Manage and review the performance of your job listings.</p>
+              </div>
             </div>
             <Link
               className='px-1.5 py-1 border hover:border-gray-300 transition-colors ease-out duration-300'

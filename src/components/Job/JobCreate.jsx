@@ -26,12 +26,16 @@ const JobCreate = () => {
     deadline: "",
     closed_at: "",
   });
-
+  // Get relation data to display
   const jobCategories = useSelector(selectJobCategories);
   const jobCategoryStatus = useSelector(selectJobCategoriesStatus);
   const jobTypes = useSelector(selectJobTypes);
   const jobTypsStatus = useSelector(selectJobTypeStatus);
+
+  // Action
   const dispatch = useDispatch();
+
+  // State
   const [requirementInput, setRequirementInput] = useState("");
   const [benefitInput, setBenefitInput] = useState("");
   const [loading, setLoading] = useState(null);
@@ -40,7 +44,7 @@ const JobCreate = () => {
 
   const handleOnChange = (e) => {
     const {name, value} = e.target;
-
+    // Set data to form
     setForm((prev) => ({
       ...prev,
       [name]: value
@@ -52,6 +56,7 @@ const JobCreate = () => {
     try {
       setLoading(true);
 
+      // Check if form-data empty
       if(!form.job_category_id || !form.job_type_id || !form.title || !form.work_mode || !form.vacancies || !form.deadline || !form.status) {
         setIsError("Field Job-Category, Job-Type, Title, Work-Mode, Vacancies, Deadline, Status are required!");
         setLoading(false);
@@ -130,10 +135,12 @@ const JobCreate = () => {
 
   useEffect(() => {
     try {
-      
+      // To fetch job-category when status is idle
       if(jobCategoryStatus === 'idle') dispatch(fetchJobCategories());
 
+      // To fetch job-type when status is idle
       if(jobTypsStatus === 'idle') dispatch(fetchJobTypes());
+
     } catch (error) {
       console.log(error);
     }
@@ -223,6 +230,7 @@ const JobCreate = () => {
                     placeholder="e.g. Senior Frontend Developer"
                     value={form.title}
                     onChange={handleOnChange}
+                    required
                   />
                   {/* Optional: Small helper text helps with UX */}
                   <p className="text-xs text-gray-500">
@@ -314,6 +322,7 @@ const JobCreate = () => {
                     "
                     value={form.work_mode}
                     onChange={handleOnChange}
+                    required
                     >
                     <option value="" defaultChecked disabled>Choose a work mode</option>
                     <option value="on-site">On-Site</option>
@@ -341,6 +350,7 @@ const JobCreate = () => {
                     placeholder="e.g. 1 or 2"
                     value={form.vacancies}
                     onChange={handleOnChange}
+                    required
                   />
                   <p className="text-xs text-gray-500">
                     In this field prompt you to input how many posts that available for recruits!
@@ -365,6 +375,7 @@ const JobCreate = () => {
                     "
                     value={form.job_category_id}
                     onChange={handleOnChange}
+                    required
                     >
                     <option value="" defaultChecked disabled>Choose a Category</option>
                     {
@@ -390,6 +401,7 @@ const JobCreate = () => {
                     "
                     value={form.job_type_id}
                     onChange={handleOnChange}
+                    required
                     >
                     <option value="" defaultChecked disabled>Choose a Job-Type</option>
                     {
@@ -417,6 +429,7 @@ const JobCreate = () => {
                     "
                     value={form.status}
                     onChange={handleOnChange}
+                    required
                     >
                     <option value="" defaultChecked disabled>Choose a status</option>
                     <option value="open">Open</option>
@@ -483,6 +496,7 @@ const JobCreate = () => {
                     " 
                     value={form.deadline}
                     onChange={handleOnChange}
+                    required
                   />
                 </div>
               </div>

@@ -4,11 +4,12 @@ import { FaLinkedin, FaGithub, FaGlobe, FaEnvelope, FaFileDownload, FaEdit, FaTr
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
 import { removeResume } from "../../feature/resume/resumeSlice";
-import { resetCompanyStatus } from "../../feature/company/companySlice";
+import { resetCandidateProfileStatus } from "../../feature/candidateProfile/candidateProfileSlice";
+import { IoMdArrowBack } from "react-icons/io";
 
 const CandidateProfile = ({ data }) => {
   const profile = Array.isArray(data) ? data[0] : data;
-
+  // console.log('profile - ', profile);
   const memberSince = profile?.created_at
     ? new Date(profile.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
     : 'N/A';
@@ -32,7 +33,7 @@ const CandidateProfile = ({ data }) => {
       await dispatch(removeResume(id)).unwrap();
 
       // Reload Company Data
-      dispatch(resetCompanyStatus());
+      dispatch(resetCandidateProfileStatus());
 
       Swal.fire({
         title: "Deleted",
@@ -54,7 +55,14 @@ const CandidateProfile = ({ data }) => {
   return (
     <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden my-8">
       {/* Top Banner */}
-      <div className="bg-linear-to-r from-slate-800 to-slate-900 h-40"></div>
+      <div className="bg-linear-to-r from-slate-800 to-slate-900 h-32">
+        <Link
+          to={'/'}
+          className="p-1"
+          >
+          <IoMdArrowBack size={24} className='text-gray-500 hover:text-cyan-500 transition-colors duration-300 ease-linear mx-2'/>
+        </Link>
+      </div>
 
       <div className="px-6 md:px-10 pb-10">
         {/* Profile Header Section */}
@@ -155,7 +163,7 @@ const CandidateProfile = ({ data }) => {
                         </Link>
                         <button 
                           onClick={() => handleDelete(resume.id)}
-                          className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                          className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
                           title="Delete Resume"
                         >
                           <FaTrash size={14} />

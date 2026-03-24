@@ -6,6 +6,7 @@ import { IoAdd } from 'react-icons/io5';
 import ApplicationCard from '../components/Application/ApplicationCard';
 import { FaBriefcase } from 'react-icons/fa';
 import { selectUser } from '../feature/auth/authSlice';
+import { IoMdArrowBack } from 'react-icons/io';
 
 const Application = () => {
 
@@ -38,9 +39,16 @@ const Application = () => {
             {
               isEmployer ? (
                 <>
-                  <div className='space-y-2'>
-                    <h1 className="text-2xl font-bold text-gray-900">Candidate Applied Jobs</h1>
-                    <p className="text-gray-600">Track the status and make any update on candidate applied job.</p>
+                  <div className='flex md:flex-row flex-col items-start md:space-y-1 space-y-1.5 gap-x-1.5'>
+                    <Link 
+                      to={'/'}
+                      className='mt-2'>
+                      <IoMdArrowBack size={20} className='text-gray-500 hover:text-cyan-500 transition-colors duration-300 ease-linear'/>
+                    </Link>
+                    <div className='space-y-2'>
+                      <h1 className="text-2xl font-bold text-gray-900">Candidate Applied Jobs</h1>
+                      <p className="text-gray-600">Track the status and make any update on candidate applied job.</p>
+                    </div>
                   </div>
                   <div className='flex justify-end items-center'>
                     <Link
@@ -53,9 +61,16 @@ const Application = () => {
                 </>
               ) : (
                 <>
-                  <div className='space-y-2'>
-                    <h1 className="text-2xl font-bold text-gray-900">My Applied Jobs</h1>
-                    <p className="text-gray-600">Track the status of your job applications</p>
+                  <div className='flex md:flex-row flex-col items-start md:space-y-1 space-y-1.5 gap-x-1.5'>
+                    <Link 
+                      to={'/'}
+                      className='mt-2'>
+                      <IoMdArrowBack size={20} className='text-gray-500 hover:text-cyan-500 transition-colors duration-300 ease-linear'/>
+                    </Link>
+                    <div className='space-y-2'>
+                      <h1 className="text-2xl font-bold text-gray-900">My Applied Jobs</h1>
+                      <p className="text-gray-600">Track the status of your job applications</p>
+                    </div>
                   </div>
                   <div className='flex justify-end items-center'>
                     <Link

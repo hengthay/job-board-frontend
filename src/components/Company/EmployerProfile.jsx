@@ -10,7 +10,7 @@ import {
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { GiWorld } from "react-icons/gi";
-import { IoMdAdd } from "react-icons/io";
+import { IoMdAdd, IoMdArrowBack } from "react-icons/io";
 import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 import { resetCompanyStatus } from "../../feature/company/companySlice";
@@ -97,7 +97,14 @@ const EmployerProfile = ({ data }) => {
   return (
     <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 my-10">
       {/* Top Banner / Header Area */}
-      <div className="bg-linear-to-r from-blue-600 to-indigo-700 h-32"></div>
+      <div className="bg-linear-to-r from-blue-600 to-indigo-700 h-32">
+        <Link
+          to={'/'}
+          className="p-1"
+          >
+          <IoMdArrowBack size={24} className='text-gray-500 hover:text-cyan-500 transition-colors duration-300 ease-linear mx-2'/>
+        </Link>
+      </div>
 
       <div className="px-8 pb-8">
         <div className="relative flex flex-col sm:flex-row items-end -mt-12 gap-5">

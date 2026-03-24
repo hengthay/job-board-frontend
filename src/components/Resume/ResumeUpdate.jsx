@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { FiSave, FiUpload } from 'react-icons/fi';
 import { resetCompanyStatus } from '../../feature/company/companySlice';
 import { clearResumeDetail, fetchResumesById, selectResumeDataDetail, updateResume } from '../../feature/resume/resumeSlice';
+import { resetCandidateProfileStatus } from '../../feature/candidateProfile/candidateProfileSlice';
 const ResumeUpdate = () => {
 
   const [form, setForm] = useState({
@@ -13,7 +14,7 @@ const ResumeUpdate = () => {
   });
 
   const { id } = useParams();
-  console.log('resume id', id);
+  // console.log('resume id', id);
   const resumeDetail = useSelector(selectResumeDataDetail);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -89,9 +90,9 @@ const ResumeUpdate = () => {
 
       await dispatch(updateResume({ id, formData })).unwrap();
 
-      // Reload Company Data
+      // Reload Status Data
       dispatch(resetCompanyStatus());
-      dispatch(clearResumeDetail());
+      dispatch(resetCandidateProfileStatus());
 
       Swal.fire({
         title: "Success",

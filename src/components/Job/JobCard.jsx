@@ -10,6 +10,7 @@ const JobCard = ({ job }) => {
 
   const dispatch = useDispatch();
 
+  // To handle on delete job
   const handleDelete = async (id) => {
     const result = await Swal.fire({
       title: "Are you sure?",

@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { IoAdd } from 'react-icons/io5';
 import SaveJobCard from '../components/SaveJob/SaveJobCard';
 import { FaBriefcase } from 'react-icons/fa';
+import { IoMdArrowBack } from "react-icons/io";
 
 const SaveJob = () => {
 
@@ -28,9 +29,16 @@ const SaveJob = () => {
       <div className='max-w-7xl mx-auto px-4 md:px-25 mt-10'>
         <div className='w-full border border-gray-300 shadow-lg rounded-md p-4'>
           <div className='flex md:flex-row flex-col justify-between items-start space-y-3'>
-            <div className='space-y-2'>
-              <h2 className="font-bold md:text-3xl text-2xl text-gray-900">Your Favorite Jobs</h2>
-              <p className="text-gray-500 mt-2">Manage and review your favorite jobs list.</p>
+            <div className='flex md:flex-row flex-col items-start md:space-y-1 space-y-1.5 gap-x-1.5'>
+              <Link 
+                to={'/'}
+                className='mt-2'>
+                <IoMdArrowBack size={20} className='text-gray-500 hover:text-cyan-500 transition-colors duration-300 ease-linear'/>
+              </Link>
+              <div className='space-y-2'>
+                <h2 className="font-bold md:text-3xl text-2xl text-gray-900">Your Favorite Jobs</h2>
+                <p className="text-gray-500 mt-2">Manage and review your favorite jobs list.</p>
+              </div>
             </div>
             <Link
               className='flex items-center px-3 rounded-sm hover:rounded-full hover:bg-cyan-600 py-1.5 shadow-sm bg-cyan-500 text-white transition-all ease-in-out duration-300'
