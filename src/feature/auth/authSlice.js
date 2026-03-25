@@ -64,7 +64,7 @@ export const registerUser = createAsyncThunk(
 
       console.log(res?.data?.data);
 
-      return res?.data?.data ?? [];
+      return res?.data?.data ?? null;
     } catch (error) {
       console.log('Failed to register user - ', error);
       const msg = error?.response?.data?.message;

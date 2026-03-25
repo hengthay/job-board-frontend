@@ -25,10 +25,14 @@ import ApplicationCreate from './components/Application/ApplicationCreate'
 import ApplicationUpdate from './components/Application/ApplicationUpdate'
 import ApplicationDetail from './components/Application/ApplicationDetail'
 import SaveJob from './pages/SaveJob'
+import IsAdmin from './components/IsAdmin'
+import Dashboard from './pages/Dashboard'
+import AdminLayout from './components/layout/AdminLayout'
 
 const App = () => { 
   return ( 
     <Routes>
+      {/* Standard route */}
       <Route element={<MainLayout />}>
         {/* Public Route */}
         <Route path='/' element={<Home />} index /> 
@@ -57,6 +61,15 @@ const App = () => {
             <Route path="/applications/:id/edit" element={<ApplicationUpdate />}/>
         </Route> 
       </Route> 
+
+      {/* Admin Route */}
+      <Route element={<ProtectedRoute />}>
+        <Route element={<IsAdmin />}>
+          <Route element={<AdminLayout />}>
+            <Route path='/admin/dashboard' element={<Dashboard />}/>
+          </Route>
+        </Route>
+      </Route>
       <Route path='/login' element={<Login />}/> 
       <Route path='/register' element={<Register />}/> 
       {/* === 404 Fallback === */} 
