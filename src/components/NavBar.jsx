@@ -91,13 +91,13 @@ const NavBar = ({ isOpen, handleOpenMenu, sideBarOpen, handleOpenSideBar }) => {
     }
   };
 
-  console.log("Current User - ", user);
+  // console.log("Current User - ", user);
 
   // Check role
   const isAdmin = user?.user?.role === "admin";
   // Get location of url
   const isAdminURL = location.pathname === "/admin/dashboard";
-  console.log(location);
+  // console.log(location);
 
   return (
     <header className="w-full container mx-auto">

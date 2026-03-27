@@ -110,7 +110,7 @@ const SideBar = ({ sideBarOpen, handleOpenSideBar }) => {
     <>
       {/* Sidebar Container */}
       <aside
-        className={`fixed top-24 left-0 z-50 h-screen bg-white border-r border-gray-200 transition-transform duration-300 ease-in-out shadow-xl
+        className={`fixed top-24 bottom-0 left-0 z-50 h-screen bg-white border-r border-gray-300 transition-all duration-300 ease-in-out shadow-xl 
         ${sideBarOpen ? "opacity-100 translate-x-0 w-64" : "opacity-0 -translate-x-full w-0"}`}
       >
         <div className="flex h-screen w-full overflow-hidden">
