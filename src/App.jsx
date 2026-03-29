@@ -28,6 +28,9 @@ import SaveJob from './pages/SaveJob'
 import IsAdmin from './components/IsAdmin'
 import Dashboard from './pages/Dashboard'
 import AdminLayout from './components/layout/AdminLayout'
+import JobType from './pages/JobType'
+import JobTypeCreate from './components/Admin/JobType/JobTypeCreate'
+import JobTypeUpdate from './components/Admin/JobType/JobTypeUpdate'
 
 const App = () => { 
   return ( 
@@ -67,6 +70,9 @@ const App = () => {
         <Route element={<IsAdmin />}>
           <Route element={<AdminLayout />}>
             <Route path='/admin/dashboard' element={<Dashboard />}/>
+            <Route path='/admin/job-types' element={<JobType />}/>
+            <Route path='/admin/job-types/create' element={<JobTypeCreate />}/>
+            <Route path='/admin/job-types/:id/edit' element={<JobTypeUpdate />}/>
           </Route>
         </Route>
       </Route>

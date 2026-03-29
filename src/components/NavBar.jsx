@@ -96,7 +96,7 @@ const NavBar = ({ isOpen, handleOpenMenu, sideBarOpen, handleOpenSideBar }) => {
   // Check role
   const isAdmin = user?.user?.role === "admin";
   // Get location of url
-  const isAdminURL = location.pathname === "/admin/dashboard";
+  const isAdminURL = location.pathname.includes('/admin');
   // console.log(location);
 
   return (

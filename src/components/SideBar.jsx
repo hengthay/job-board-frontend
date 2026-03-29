@@ -21,19 +21,19 @@ const SideBar = ({ sideBarOpen, handleOpenSideBar }) => {
       name: "Dashboard", 
       path: "/admin/dashboard", 
       icon: <MdDashboard />, 
-      color: "text-white", // Trustworthy & Primary
+      color: "text-gray-500", // Trustworthy & Primary
       style: "group-hover:text-blue-500" 
     },
     { 
       name: "Job Type", 
-      path: "/admin/job-type", 
+      path: "/admin/job-types", 
       icon: <LuTypeOutline />, 
       color: "text-purple-500", // Creative & Categorical
       style: "group-hover:text-purple-600" 
     },
     { 
       name: "Job Category", 
-      path: "/admin/job-category", 
+      path: "/admin/job-categories", 
       icon: <MdOutlineCategory />, 
       color: "text-pink-500", // Organized & Vibrant
       style: "group-hover:text-pink-600" 
@@ -54,21 +54,21 @@ const SideBar = ({ sideBarOpen, handleOpenSideBar }) => {
     },
     { 
       name: "Candidate-Profile", 
-      path: "/admin/candidate-profile", 
+      path: "/admin/candidate-profiles", 
       icon: <MdPeople />, 
       color: "text-cyan-500", // Fresh & Focused
       style: "group-hover:text-cyan-600" 
     },
     { 
       name: "Company", 
-      path: "/admin/company", 
+      path: "/admin/companies", 
       icon: <IoBusinessOutline />, 
       color: "text-indigo-500", // Professional & Corporate
       style: "group-hover:text-indigo-600" 
     },
     { 
       name: "Company-Social", 
-      path: "/admin/company-social", 
+      path: "/admin/company-socials", 
       icon: <MdSocialDistance />, 
       color: "text-rose-500", // Social & Engaging
       style: "group-hover:text-rose-600" 

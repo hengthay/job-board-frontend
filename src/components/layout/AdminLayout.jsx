@@ -26,7 +26,7 @@ const AdminLayout = () => {
         </div>
       </div>
 
-      <main className="flex-1 w-full">
+      <main className="flex-1 w-full mt-30 mb-6">
         {/* Provide prop to child */}
         <Outlet context={{ sideBarOpen, handleOpenSideBar }}/>
       </main>

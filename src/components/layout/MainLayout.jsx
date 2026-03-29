@@ -19,7 +19,7 @@ const MainLayout = () => {
         </div>
       </div>
 
-      <main className="flex-1 w-full">
+      <main className="flex-1 w-full mt-24">
         <Outlet />
       </main>
     </div>

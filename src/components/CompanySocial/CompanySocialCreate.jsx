@@ -80,7 +80,7 @@ const CompanySocialCreate = () => {
           Let's Create Company Social.
         </h2>
         <div className="w-full my-4">
-          <form action="w-full" onSubmit={handleOnSubmit}>
+          <form className="w-full" onSubmit={handleOnSubmit}>
             <div className="space-y-4">
               <div className="w-full grid md:grid-cols-2 grid-cols-1 gap-x-6">
                 <div className="w-full flex flex-col space-y-2 group">

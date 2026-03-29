@@ -93,9 +93,9 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className={`w-full md:my-30 my-6 transition-all ease-in-out duration-300 ${sideBarOpen ? "pl-70" : 'pl-0'}`}>
+    <div className={`w-full transition-all ease-in-out duration-300 ${sideBarOpen ? "pl-70" : 'pl-0'}`}>
       <div className={`${sideBarOpen ? 'md:pr-4' : 'md:px-8 px-3'}`}>
-        <div className='w-full mx-auto border border-gray-300 shadow-sm rounded-sm min-h-40'>
+        <div className='w-full mx-auto border border-gray-300 shadow-sm rounded-sm'>
           <div className='md:p-6 p-4 space-y-3'>
             <div className='space-y-2'>
               <h1 className='md:text-3xl text-2xl font-medium tracking-wide'>Dashboard</h1>

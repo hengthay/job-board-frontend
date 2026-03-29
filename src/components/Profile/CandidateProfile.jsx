@@ -80,7 +80,7 @@ const CandidateProfile = ({ data }) => {
               {profile?.user?.name}
             </h1>
             <p className="text-xl text-blue-600 font-medium">{profile?.title || "Professional Candidate"}</p>
-            <div className="flex items-center justify-center md:justify-start gap-2 mt-2 text-gray-500">
+            <div className="flex md:items-center item-start justify-center md:justify-start md:gap-2 gap-x-px mt-2 text-gray-500">
               <CiLocationOn className="text-gray-400" />
               <span className="text-sm">{profile?.location || "Location not specified"}</span>
             </div>
