@@ -1,51 +1,21 @@
-import React, { useEffect, useState } from 'react'
-import { FiSave } from 'react-icons/fi';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { fetchJobTypeById, resetJobTypeStatus, selectJobTypeDataDetail, updateJobType } from '../../../feature/jobtype/jobTypeSlice';
+import { createJobCategory, resetJobCategoryStatus } from '../../../feature/jobcategories/jobCategoriesSlice';
+import { FiSave } from 'react-icons/fi';
 
-const JobTypeUpdate = () => {
+const JobCategoryCreate = () => {
 
   const [form, setForm] = useState({
     name: ""
   });
 
-  const { id } = useParams();
-
-  const jobTypeDetail = useSelector(selectJobTypeDataDetail);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { sideBarOpen } = useOutletContext();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  // Fetch data
-  useEffect(() => {
-    try {
-      if(!id) return alert('No ID Received!');
-
-      if(id) dispatch(fetchJobTypeById(id));
-
-    } catch (error) {
-      console.log(error);
-    }
-  }, [id, dispatch]);
-
-  console.log(jobTypeDetail);
-
-  // When redux is ready
-  useEffect(() => {
-    try {
-      if(!jobTypeDetail) return;
-
-      setForm({
-        name: jobTypeDetail?.name ?? ""
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }, [jobTypeDetail]);
 
   const handleOnChange = (e) => {
     const {name, value} = e.target;
@@ -63,27 +33,27 @@ const JobTypeUpdate = () => {
       setLoading(true);
 
       if(!form.name) {
-        setError("Type Name is required!");
+        setError("Category Name is required!");
         return;
       }
 
       const formData = new FormData();
       formData.append('name', form.name);
 
-      await dispatch(updateJobType({ id, formData })).unwrap();
+      await dispatch(createJobCategory(formData)).unwrap();
 
       // Reset Job-Type status
-      dispatch(resetJobTypeStatus());
+      dispatch(resetJobCategoryStatus());
 
       Swal.fire({
         title: "Success",
-        text: "Job-Type is updated successfully!",
+        text: "Job-Category is created successfully!",
         icon: "success",
         timer: 2000,
       });
 
       const timeOut = setTimeout(() => {
-        navigate('/admin/job-types');
+        navigate('/admin/job-categories');
       }, 2000);
 
       // Clear form
@@ -96,7 +66,7 @@ const JobTypeUpdate = () => {
       console.log(error);
       Swal.fire({
         title: "Failed",
-        text: `Job-Type is failed to update - ${error}`,
+        text: `Job-Category is failed to create - ${error}`,
         icon: "error",
         timer: 2000,
       });
@@ -112,7 +82,7 @@ const JobTypeUpdate = () => {
       <div className='w-full'>
         <div className="w-full flex flex-col items-start shadow md:p-6 p-3 rounded-md border border-gray-300 space-y-2">
           <h2 className="md:text-3xl text-2xl font-medium tracking-wide">
-            Update Job-Type.
+            Create New Job-Category.
           </h2>
           <div className="w-full my-4">
             <form className="w-full" onSubmit={handleOnSubmit}>
@@ -123,7 +93,7 @@ const JobTypeUpdate = () => {
                     htmlFor="name"
                     className="flex gap-x-1 text-sm font-semibold text-gray-700 group-focus-within:text-cyan-600 transition-colors"
                   >
-                    Type Name <p className='text-red-500 text-sm'>*</p>
+                    Category Name <p className='text-red-500 text-sm'>*</p>
                   </label>
                   {/* Input with smooth transitions and improved focus states */}
                   <input
@@ -141,7 +111,7 @@ const JobTypeUpdate = () => {
               {/* Actions */}
               <div className="flex justify-end gap-3 pt-4 my-4">
                 <Link
-                  to="/admin/job-types"
+                  to="/admin/job-categories"
                   className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 text-sm font-medium hover:bg-gray-100 transition"
                 >
                   Cancel
@@ -152,7 +122,7 @@ const JobTypeUpdate = () => {
                   className="inline-flex items-center gap-2 px-5 py-2 rounded-lg bg-gray-900 text-white text-sm font-semibold hover:bg-gray-800 transition cursor-pointer"
                 >
                   <FiSave />
-                  Save
+                  Create
                 </button>
               </div>
             </form>
@@ -166,4 +136,4 @@ const JobTypeUpdate = () => {
   )
 }
 
-export default JobTypeUpdate
+export default JobCategoryCreate

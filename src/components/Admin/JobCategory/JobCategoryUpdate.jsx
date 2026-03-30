@@ -1,51 +1,55 @@
 import React, { useEffect, useState } from 'react'
-import { FiSave } from 'react-icons/fi';
+import { fetchJobCategoryById, resetJobCategoryStatus, selectJobCategoriesDataDetail, updateJobCategory } from '../../../feature/jobcategories/jobCategoriesSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import { FiSave } from 'react-icons/fi';
 import Swal from 'sweetalert2';
-import { fetchJobTypeById, resetJobTypeStatus, selectJobTypeDataDetail, updateJobType } from '../../../feature/jobtype/jobTypeSlice';
 
-const JobTypeUpdate = () => {
+const JobCategoryUpdate = () => {
 
   const [form, setForm] = useState({
     name: ""
   });
 
   const { id } = useParams();
-
-  const jobTypeDetail = useSelector(selectJobTypeDataDetail);
+  // console.log('Job-Category ID: ', id);
+  // Data from redux
+  const jobCategoryDetail = useSelector(selectJobCategoriesDataDetail);
+  // State
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { sideBarOpen } = useOutletContext();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Fetch data
+  // Fetch job-category detail
   useEffect(() => {
     try {
-      if(!id) return alert('No ID Received!');
+  
+      if(!id) return alert("No ID was received!");
 
-      if(id) dispatch(fetchJobTypeById(id));
+      if(id) dispatch(fetchJobCategoryById(id));
 
     } catch (error) {
       console.log(error);
     }
   }, [id, dispatch]);
 
-  console.log(jobTypeDetail);
+  console.log('Job-Category Detail - ', jobCategoryDetail);
 
-  // When redux is ready
   useEffect(() => {
     try {
-      if(!jobTypeDetail) return;
+      
+      if(!jobCategoryDetail) return;
 
       setForm({
-        name: jobTypeDetail?.name ?? ""
-      });
+        name: jobCategoryDetail?.name ?? ""
+      })
+
     } catch (error) {
       console.log(error);
     }
-  }, [jobTypeDetail]);
+  }, [jobCategoryDetail]);
 
   const handleOnChange = (e) => {
     const {name, value} = e.target;
@@ -63,27 +67,27 @@ const JobTypeUpdate = () => {
       setLoading(true);
 
       if(!form.name) {
-        setError("Type Name is required!");
+        setError("Category Name is required!");
         return;
       }
 
       const formData = new FormData();
       formData.append('name', form.name);
 
-      await dispatch(updateJobType({ id, formData })).unwrap();
+      await dispatch(updateJobCategory({ id, formData })).unwrap();
 
       // Reset Job-Type status
-      dispatch(resetJobTypeStatus());
+      dispatch(resetJobCategoryStatus());
 
       Swal.fire({
         title: "Success",
-        text: "Job-Type is updated successfully!",
+        text: "Job-Category is updated successfully!",
         icon: "success",
         timer: 2000,
       });
 
       const timeOut = setTimeout(() => {
-        navigate('/admin/job-types');
+        navigate('/admin/job-categories');
       }, 2000);
 
       // Clear form
@@ -96,7 +100,7 @@ const JobTypeUpdate = () => {
       console.log(error);
       Swal.fire({
         title: "Failed",
-        text: `Job-Type is failed to update - ${error}`,
+        text: `Job-Category is failed to update - ${error}`,
         icon: "error",
         timer: 2000,
       });
@@ -112,7 +116,7 @@ const JobTypeUpdate = () => {
       <div className='w-full'>
         <div className="w-full flex flex-col items-start shadow md:p-6 p-3 rounded-md border border-gray-300 space-y-2">
           <h2 className="md:text-3xl text-2xl font-medium tracking-wide">
-            Update Job-Type.
+            Update Job-Category.
           </h2>
           <div className="w-full my-4">
             <form className="w-full" onSubmit={handleOnSubmit}>
@@ -123,7 +127,7 @@ const JobTypeUpdate = () => {
                     htmlFor="name"
                     className="flex gap-x-1 text-sm font-semibold text-gray-700 group-focus-within:text-cyan-600 transition-colors"
                   >
-                    Type Name <p className='text-red-500 text-sm'>*</p>
+                    Category Name <p className='text-red-500 text-sm'>*</p>
                   </label>
                   {/* Input with smooth transitions and improved focus states */}
                   <input
@@ -141,7 +145,7 @@ const JobTypeUpdate = () => {
               {/* Actions */}
               <div className="flex justify-end gap-3 pt-4 my-4">
                 <Link
-                  to="/admin/job-types"
+                  to="/admin/job-categories"
                   className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 text-sm font-medium hover:bg-gray-100 transition"
                 >
                   Cancel
@@ -166,4 +170,4 @@ const JobTypeUpdate = () => {
   )
 }
 
-export default JobTypeUpdate
+export default JobCategoryUpdate

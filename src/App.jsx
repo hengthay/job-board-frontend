@@ -31,6 +31,9 @@ import AdminLayout from './components/layout/AdminLayout'
 import JobType from './pages/JobType'
 import JobTypeCreate from './components/Admin/JobType/JobTypeCreate'
 import JobTypeUpdate from './components/Admin/JobType/JobTypeUpdate'
+import JobCategory from './pages/JobCategory'
+import JobCategoryCreate from './components/Admin/JobCategory/JobCategoryCreate'
+import JobCategoryUpdate from './components/Admin/JobCategory/JobCategoryUpdate'
 
 const App = () => { 
   return ( 
@@ -73,6 +76,9 @@ const App = () => {
             <Route path='/admin/job-types' element={<JobType />}/>
             <Route path='/admin/job-types/create' element={<JobTypeCreate />}/>
             <Route path='/admin/job-types/:id/edit' element={<JobTypeUpdate />}/>
+            <Route path='/admin/job-categories' element={<JobCategory />}/>
+            <Route path='/admin/job-categories/create' element={<JobCategoryCreate />}/>
+            <Route path='/admin/job-categories/:id/edit' element={<JobCategoryUpdate />}/>
           </Route>
         </Route>
       </Route>

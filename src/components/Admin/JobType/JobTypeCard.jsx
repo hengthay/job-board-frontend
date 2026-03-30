@@ -58,7 +58,7 @@ const JobTypeCard = ({ jobType }) => {
 
       {/* Main Content */}
       <div className="mb-3">
-        <h3 className="text-lg font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">
+        <h3 className="text-lg font-semibold text-gray-800 group-hover:text-blue-600 transition-colors text-wrap">
           {jobType.name}
         </h3>
         <p className="text-xs text-gray-500 mt-1">Created: {formatDate(jobType.created_at)}</p>

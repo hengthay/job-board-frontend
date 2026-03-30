@@ -41,7 +41,7 @@ export const fetchJobTypeById = createAsyncThunk(
         return thunkAPI.rejectWithValue(`Job-Type with id:${id} not found!`);
       }
 
-      console.log('Job Types detail- ', res?.data?.data);
+      // console.log('Job Types detail- ', res?.data?.data);
 
       return res?.data?.data ?? null;
     } catch (error) {
@@ -66,7 +66,7 @@ export const createJobType = createAsyncThunk(
         return thunkAPI.rejectWithValue("Erorr to create new job-types!");
       }
 
-      console.log('Job-Type Created: ', res?.data?.data);
+      // console.log('Job-Type Created: ', res?.data?.data);
 
       return res?.data?.data ?? [];
     } catch (error) {
@@ -91,7 +91,7 @@ export const updateJobType = createAsyncThunk(
         return thunkAPI.rejectWithValue("Erorr to update new job-types!");
       }
 
-      console.log('Job-Type updated: ', res?.data?.data);
+      // console.log('Job-Type updated: ', res?.data?.data);
 
       return res?.data?.data ?? [];
     } catch (error) {
