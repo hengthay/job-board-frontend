@@ -25,7 +25,7 @@ const JobCategory = () => {
     }
   }, [jobCategoryStatus, dispatch]);
 
-  console.log('job-categories - ', jobCategories);
+  // console.log('job-categories - ', jobCategories);
   return (
     <div
       className={`w-full transition-all ease-in-out duration-300 ${sideBarOpen ? "pl-70" : "pl-0"}`}

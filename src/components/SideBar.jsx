@@ -126,7 +126,7 @@ const SideBar = ({ sideBarOpen, handleOpenSideBar }) => {
                   to={link.path}
                   className={`flex items-center gap-3 px-4 py-2.5 transition-colors group 
                   ${location.pathname === link.path 
-                    ? "border-l-4 border-yellow-500 bg-cyan-500 text-white shadow-md" 
+                    ? "border-l-4 border-yellow-500 hover:bg-grey-200 text-black bg-gray-100 shadow-sm" 
                     : "text-gray-600 hover:bg-gray-100"}`}
                 >
                   <span className={`text-xl transition-colors duration-300 ${link.color} ${link.style}`}>{link.icon}</span>

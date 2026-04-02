@@ -53,25 +53,6 @@ export const fetchCompanyById = createAsyncThunk(
   }
 );
 
-export const fetchAllCompanies = createAsyncThunk(
-  'companies/fetchAllCompanies', async () => {
-    try {
-      
-      const res = await axiosInstance.get(`${API_BASE_URL}/admin/companies`);
-
-      if(!res?.data?.data) return thunkAPI.rejectWithValue('Failed to fetch company by admin!');
-
-      console.log('Company data - ', res?.data?.data);
-
-      return res?.data?.data ?? [];
-    } catch (error) {
-      const msg = error?.response?.data?.message;
-      console.log('Error to fetch all companies - ', msg);
-      return thunkAPI.rejectWithValue(msg);
-    }
-  }
-);
-
 export const createCompanyProfile = createAsyncThunk(
   'companies/createCompanyProfile', async (formData, thunkAPI) => {
     try {
@@ -149,12 +130,75 @@ export const removeCompanyProfile = createAsyncThunk(
   }
 )
 
+
+export const fetchAllCompanies = createAsyncThunk(
+  'companies/fetchAllCompanies', async () => {
+    try {
+      
+      const res = await axiosInstance.get(`${API_BASE_URL}/admin/companies`);
+
+      if(!res?.data?.data) return thunkAPI.rejectWithValue('Failed to fetch company by admin!');
+
+      console.log('Company data - ', res?.data?.data);
+
+      return res?.data?.data ?? [];
+    } catch (error) {
+      const msg = error?.response?.data?.message;
+      console.log('Error to fetch all companies - ', msg);
+      return thunkAPI.rejectWithValue(msg);
+    }
+  }
+);
+
+export const findCompanyProfileByAdmin = createAsyncThunk(
+  'companies/findCompanyProfileByAdmin', async (id, thunkAPI) => {
+    try {
+      
+      const res = await axiosInstance.get(`${API_BASE_URL}/admin/companies/${id}`);
+
+      if(!res?.data?.data) {
+        return thunkAPI.rejectWithValue("Error to get company profile!");
+      }
+
+      console.log('Company Profile by Admin - ', res?.data?.data);
+
+      return res?.data?.data ?? null;
+    } catch (error) {
+      const msg = error?.response?.data?.message;
+      console.log(`Error to get company profile with id:${id} - `, msg);
+      return thunkAPI.rejectWithValue(msg);
+    }
+  }
+)
+
+export const removeCompanyProfileByAdmin = createAsyncThunk(
+  'companies/removeCompanyProfileByAdmin', async (id, thunkAPI) => {
+    try {
+      
+      const res = await axiosInstance.delete(`${API_BASE_URL}/admin/companies/${id}`);
+
+      if(res?.status === 200 || res?.status === 204) return id;
+
+      if(res?.data?.data) return id;
+      
+      return thunkAPI.rejectWithValue("Error to delete Company Profile by Admin!");
+    } catch (error) {
+      const msg = error?.response?.data?.message;
+      console.log(`Error to get company profile with id:${id} - `, msg);
+      return thunkAPI.rejectWithValue(msg);
+    }
+  }
+)
+
 const companySlice = createSlice({
-  name: "comapanies",
+  name: "companies",
   initialState,
   reducers: {
     resetCompanyStatus: (state) => {
       state.status = 'idle'
+    },
+    resetAllCompaniesStatus: (state) => {
+      state.companiesStatus = 'idle';
     }
   },
   extraReducers: (builder) => {
@@ -184,19 +228,6 @@ const companySlice = createSlice({
       .addCase(fetchCompanyById.rejected, (state, action) => {
         state.error = action.payload || 'Something went wrong!'
         state.status = 'failed';
-      })
-      .addCase(fetchAllCompanies.pending, (state) => {
-        state.error = null;
-        state.companiesStatus = 'loading';
-      })
-      .addCase(fetchAllCompanies.fulfilled, (state, action) => {
-        state.error = null;
-        state.companiesStatus = 'succeeded';
-        state.allCompaniesData = action.payload;
-      })
-      .addCase(fetchAllCompanies.rejected, (state, action) => {
-        state.error = action.payload || 'Something went wrong!'
-        state.companiesStatus = 'failed';
       })
       .addCase(createCompanyProfile.pending, (state) => {
         state.error = null;
@@ -261,13 +292,64 @@ const companySlice = createSlice({
         state.error = action.payload || 'Something went wrong!'
         state.status = 'failed';
       })
+
+      // Admin method
+      .addCase(fetchAllCompanies.pending, (state) => {
+        state.error = null;
+        state.companiesStatus = 'loading';
+      })
+      .addCase(fetchAllCompanies.fulfilled, (state, action) => {
+        state.error = null;
+        state.companiesStatus = 'succeeded';
+        state.allCompaniesData = action.payload;
+      })
+      .addCase(fetchAllCompanies.rejected, (state, action) => {
+        state.error = action.payload || 'Something went wrong!'
+        state.companiesStatus = 'failed';
+      })
+      .addCase(findCompanyProfileByAdmin.pending, (state) => {
+        state.error = null;
+        state.companyStatus = 'loading';
+      })
+      .addCase(findCompanyProfileByAdmin.fulfilled, (state, action) => {
+        state.error = null;
+        state.companyStatus = 'succeeded';
+        state.companyDetailData = action.payload;
+      })
+      .addCase(findCompanyProfileByAdmin.rejected, (state, action) => {
+        state.error = action.payload || 'Something went wrong!'
+        state.companyStatus = 'failed';
+      })
+      .addCase(removeCompanyProfileByAdmin.pending, (state) => {
+        state.error = null;
+        state.companiesStatus = 'loading';
+      })
+      .addCase(removeCompanyProfileByAdmin.fulfilled, (state, action) => {
+        state.error = null;
+        state.companiesStatus = 'succeeded';
+        const deletedId = action.payload;
+
+        state.allCompaniesData = state.allCompaniesData.filter((company) => company.id !== deletedId);
+
+        if(state.companyDetailData?.id === deletedId) {
+          state.companyDetailData = null
+        }
+      })
+      .addCase(removeCompanyProfileByAdmin.rejected, (state, action) => {
+        state.error = action.payload || 'Something went wrong!'
+        state.companiesStatus = 'failed';
+      })
   }
 });
 
 export default companySlice.reducer;
-export const { resetCompanyStatus } = companySlice.actions;
+export const { resetCompanyStatus, resetAllCompaniesStatus } = companySlice.actions;
 export const selectCompanyData = (state) => state.companies.companyData;
 export const selectCompanyStatus = (state) => state.companies.status;
 export const selectCompanyError = (state) => state.companies.error;
+// Admin selector
 export const selectCompanyDetailData = (state) => state.companies.companyDetailData;
 export const selectCompanyDetailStatus = (state) => state.companies.companyStatus;
+
+export const selectAllCompaniesData = (state) => state.companies.allCompaniesData;
+export const selectCompaniesStatus = (state) => state.companies.companiesStatus;

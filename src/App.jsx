@@ -34,6 +34,7 @@ import JobTypeUpdate from './components/Admin/JobType/JobTypeUpdate'
 import JobCategory from './pages/JobCategory'
 import JobCategoryCreate from './components/Admin/JobCategory/JobCategoryCreate'
 import JobCategoryUpdate from './components/Admin/JobCategory/JobCategoryUpdate'
+import CompanyDetail from './components/Admin/Company/CompanyDetail'
 
 const App = () => { 
   return ( 
@@ -79,6 +80,8 @@ const App = () => {
             <Route path='/admin/job-categories' element={<JobCategory />}/>
             <Route path='/admin/job-categories/create' element={<JobCategoryCreate />}/>
             <Route path='/admin/job-categories/:id/edit' element={<JobCategoryUpdate />}/>
+            <Route path='/admin/companies' element={<Company />}/>
+            <Route path='/admin/companies/:id/edit' element={<CompanyDetail />}/>
           </Route>
         </Route>
       </Route>

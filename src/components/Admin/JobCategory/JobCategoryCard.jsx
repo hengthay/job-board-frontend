@@ -48,7 +48,7 @@ const JobCategoryCard = ({ jobCategory }) => {
   };
 
   return (
-    <div className="group relative w-full bg-white border border-gray-200 hover:border-blue-400 rounded-2xl p-4 md:p-5 shadow-sm hover:shadow-lg transition-all duration-300">
+    <div className="group w-full bg-white border border-gray-200 hover:border-blue-400 rounded-2xl p-4 md:p-5 shadow-sm hover:shadow-lg transition-all duration-300">
       {/* Top Row */}
       <div className="flex items-center justify-between mb-3">
         <span className="text-[10px] font-semibold tracking-wider text-gray-500 bg-gray-100 px-2 py-1 rounded-md">
@@ -79,7 +79,7 @@ const JobCategoryCard = ({ jobCategory }) => {
           title="Edit"
           className="flex items-center gap-1 text-sm text-gray-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-lg transition"
         >
-          <CiEdit size={18} />
+          <CiEdit size={20} />
         </Link>
 
         <button
@@ -88,7 +88,7 @@ const JobCategoryCard = ({ jobCategory }) => {
           onClick={() => handleDelete(jobCategory?.id)}
           className="flex items-center gap-1 text-sm text-gray-500 hover:text-red-600 hover:bg-red-50 px-2 py-1.5 rounded-lg transition"
         >
-          <CiTrash size={18} />
+          <CiTrash size={20} />
         </button>
       </div>
 

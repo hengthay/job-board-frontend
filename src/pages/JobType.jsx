@@ -14,7 +14,7 @@ const JobType = () => {
   // Action
   const dispatch = useDispatch();
 
-  console.log(jobTypes);
+  // console.log(jobTypes);
 
   useEffect(() => {
     try {
@@ -66,7 +66,7 @@ const JobType = () => {
               jobTypeStatus === 'failed' && (
                 <div className="bg-red-400 py-1.5 px-3 rounded-md my-8">
                   <p className="text-white">Failed to load jobs data, {jobTypeError}</p>
-              </div>
+                </div>
               )
             }
           </div>
